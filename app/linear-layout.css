@@ -1,26 +1,77 @@
-/* Linear DESIGN.md — final theme and geometry layer. */
+/* Notion DESIGN.md — accessible light-first theme over the stable layout grid. */
 
 :root {
-  --linear-canvas: #010102;
-  --linear-surface-1: #0f1011;
-  --linear-surface-2: #141516;
-  --linear-surface-3: #18191a;
-  --linear-line: #23252a;
-  --linear-line-strong: #34343a;
-  --linear-ink: #f7f8f8;
-  --linear-muted: #d0d6e0;
-  --linear-subtle: #8a8f98;
-  --linear-tertiary: #62666d;
-  --linear-primary: #5e6ad2;
-  --linear-primary-hover: #828fff;
-  --linear-success: #27a644;
+  --linear-canvas: #ffffff;
+  --linear-surface-1: #f6f5f4;
+  --linear-surface-2: #fafaf9;
+  --linear-surface-3: #f0eeec;
+  --linear-line: #e5e3df;
+  --linear-line-strong: #c8c4be;
+  --linear-ink: #1a1a1a;
+  --linear-muted: #37352f;
+  --linear-subtle: #5d5b54;
+  --linear-tertiary: #6b6964;
+  --linear-primary: #5645d4;
+  --linear-primary-hover: #4534b3;
+  --linear-success: #14833b;
+  --paper: var(--linear-canvas);
+  --ink: var(--linear-ink);
+  --muted: var(--linear-subtle);
+  --line: var(--linear-line);
+  --soft: var(--linear-surface-1);
+  --accent: var(--linear-primary);
+  --white: #ffffff;
+  --surface: var(--linear-canvas);
+  --surface-strong: var(--linear-surface-1);
+  --surface-raised: var(--linear-surface-3);
+  --success: var(--linear-success);
+  --warning: #a65d00;
+  --danger: #c53030;
+  --shadow: 0 18px 56px rgba(15, 15, 15, .08);
   --linear-page: 1184px;
   --linear-gutter: max(32px, calc((100vw - var(--linear-page)) / 2));
   --linear-section: 96px;
 }
 
+:root[data-theme="dark"] {
+  --linear-canvas: #101011;
+  --linear-surface-1: #171718;
+  --linear-surface-2: #1d1d1f;
+  --linear-surface-3: #252528;
+  --linear-line: #303033;
+  --linear-line-strong: #49494f;
+  --linear-ink: #f5f5f4;
+  --linear-muted: #d3d1cd;
+  --linear-subtle: #a8a59f;
+  --linear-tertiary: #85827c;
+  --linear-primary: #8b7cf6;
+  --linear-primary-hover: #a89df9;
+  --linear-success: #65c77b;
+  --white: #1d1d1f;
+  --warning: #efb35c;
+  --danger: #ff8585;
+  --shadow: 0 18px 64px rgba(0, 0, 0, .28);
+}
+
+:root[data-theme="light"] {
+  --paper: var(--linear-canvas);
+  --ink: var(--linear-ink);
+  --muted: var(--linear-subtle);
+  --line: var(--linear-line);
+  --soft: var(--linear-surface-1);
+  --accent: var(--linear-primary);
+  --white: #ffffff;
+  --surface: var(--linear-canvas);
+  --surface-strong: var(--linear-surface-1);
+  --surface-raised: var(--linear-surface-3);
+  --success: var(--linear-success);
+  --warning: #a65d00;
+  --danger: #c53030;
+  --shadow: 0 18px 56px rgba(15, 15, 15, .08);
+}
+
 html {
-  color-scheme: dark;
+  color-scheme: light;
   scroll-padding-top: 64px;
   background: var(--linear-canvas);
 }
@@ -103,6 +154,62 @@ canvas {
   transform: translate3d(0, 0, 0);
 }
 
+/* Persistent language + appearance controls */
+.site-preferences {
+  position: fixed;
+  z-index: 1000;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 5px;
+  color: var(--linear-ink);
+  border: 1px solid var(--linear-line);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--linear-canvas) 92%, transparent);
+  box-shadow: 0 12px 34px rgba(15, 15, 15, .12);
+  backdrop-filter: blur(18px) saturate(150%);
+}
+
+.site-preferences > span {
+  width: 1px;
+  height: 24px;
+  background: var(--linear-line);
+}
+
+.preference-group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(34px, auto));
+  gap: 3px;
+}
+
+.preference-group button {
+  display: grid;
+  min-width: 34px;
+  min-height: 34px;
+  padding: 0 8px;
+  place-items: center;
+  color: var(--linear-subtle);
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font: 600 12px/1 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  cursor: pointer;
+}
+
+.preference-group button:hover {
+  color: var(--linear-ink);
+  background: var(--linear-surface-1);
+}
+
+.preference-group button[aria-pressed="true"] {
+  color: #fff;
+  background: var(--linear-primary);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--linear-primary) 24%, transparent);
+}
+
 /* Navigation */
 .meta-promo {
   display: none !important;
@@ -121,8 +228,8 @@ canvas {
   margin: 0;
   padding: 0 var(--linear-gutter);
   border: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, .08);
-  background: rgba(1, 1, 2, .86);
+  border-bottom: 1px solid var(--linear-line);
+  background: color-mix(in srgb, var(--linear-canvas) 90%, transparent);
   backdrop-filter: blur(18px) saturate(140%);
 }
 
@@ -145,7 +252,7 @@ canvas {
   width: 28px;
   height: 28px;
   place-items: center;
-  border: 1px solid rgba(130, 143, 255, .55);
+  border: 1px solid color-mix(in srgb, var(--linear-primary) 55%, var(--linear-line));
   border-radius: 8px;
   color: #fff;
   background: var(--linear-primary);
@@ -210,7 +317,7 @@ canvas {
   justify-content: center;
   min-height: 34px;
   padding: 0 14px;
-  border: 1px solid rgba(255, 255, 255, .08);
+  border: 1px solid color-mix(in srgb, var(--linear-primary) 24%, var(--linear-line));
   border-radius: 8px;
   color: #fff;
   background: var(--linear-primary);
@@ -345,7 +452,7 @@ canvas {
   border-radius: 16px;
   overflow: hidden;
   background: var(--linear-surface-1) !important;
-  box-shadow: inset 0 1px rgba(255, 255, 255, .035);
+  box-shadow: 0 18px 48px rgba(15, 15, 15, .08);
 }
 
 .meta-hero-visual::before,
@@ -382,7 +489,7 @@ canvas {
 }
 
 .featured-talent-card.is-tilting {
-  border-color: #4a4d5c !important;
+  border-color: var(--linear-primary) !important;
   transition-duration: .08s;
 }
 
@@ -410,7 +517,7 @@ canvas {
   border: 1px solid var(--linear-line);
   border-radius: 8px;
   color: var(--linear-muted);
-  background: rgba(15, 16, 17, .92);
+  background: color-mix(in srgb, var(--linear-surface-2) 92%, transparent);
 }
 
 .live-dot {
@@ -442,7 +549,7 @@ canvas {
 
 .showcase-section:nth-of-type(even),
 .apple-planner-section {
-  background: #080809;
+  background: var(--linear-surface-2);
 }
 
 .showcase-section > *,
@@ -488,7 +595,7 @@ canvas {
   border-radius: 16px !important;
   overflow: hidden;
   background: var(--linear-surface-1) !important;
-  box-shadow: inset 0 1px rgba(255, 255, 255, .035) !important;
+  box-shadow: 0 14px 42px rgba(15, 15, 15, .07) !important;
 }
 
 .showcase-chrome {
@@ -519,7 +626,7 @@ canvas {
   padding: 18px 12px;
   border-color: var(--linear-line) !important;
   color: var(--linear-subtle) !important;
-  background: #0b0c0d !important;
+  background: var(--linear-surface-2) !important;
 }
 
 .showcase-sidebar b {
@@ -731,7 +838,7 @@ canvas {
 
 .planner-output {
   color: var(--linear-ink) !important;
-  background: #0b0c0d !important;
+  background: var(--linear-surface-2) !important;
 }
 
 .planner-control-head,
@@ -776,7 +883,7 @@ canvas {
   width: 100%;
   border-color: var(--linear-line) !important;
   border-radius: 8px !important;
-  background: #09090a !important;
+  background: var(--linear-surface-3) !important;
 }
 
 .planner-segmented button {
@@ -903,7 +1010,7 @@ canvas {
 }
 
 .profile-primary {
-  background: #0b0c0d !important;
+  background: var(--linear-surface-2) !important;
 }
 
 .candidate-avatar,
@@ -1033,7 +1140,7 @@ textarea {
 .portal-side,
 .rail-nav {
   border-color: var(--linear-line) !important;
-  background: #0b0c0d !important;
+  background: var(--linear-surface-2) !important;
 }
 
 .dashboard-content,
@@ -1085,7 +1192,7 @@ textarea {
 }
 
 .signin-visual {
-  background: #080809 !important;
+  background: var(--linear-surface-2) !important;
 }
 
 @media (hover: hover) and (pointer: fine) {
