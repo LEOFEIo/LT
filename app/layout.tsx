@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./linear-layout.css";
+import { ThemeToggle } from "./components/theme-toggle";
 
 export const metadata: Metadata = {
   title: {
@@ -24,8 +25,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
-      <body className="antialiased">{children}</body>
+    <html lang="zh-CN" data-theme="light" data-lang="zh" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('shiguang-theme');var l=localStorage.getItem('shiguang-language');document.documentElement.dataset.theme=t==='dark'?'dark':'light';document.documentElement.dataset.lang=l==='en'?'en':'zh';document.documentElement.lang=l==='en'?'en':'zh-CN';document.documentElement.style.colorScheme=t==='dark'?'dark':'light'}catch(e){}})();`,
+          }}
+        />
+      </head>
+      <body className="antialiased">
+        {children}
+        <ThemeToggle />
+      </body>
     </html>
   );
 }
