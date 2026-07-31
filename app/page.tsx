@@ -3,6 +3,7 @@ import { chatGPTSignInPath, getChatGPTUser } from "./chatgpt-auth";
 import { ProductHeader } from "./components/product-header";
 import { HiringPlanner } from "./components/hiring-planner";
 import { TalentPrompt } from "./components/talent-prompt";
+import { PageMotion } from "./components/page-motion";
 
 export const dynamic = "force-dynamic";
 
@@ -66,6 +67,7 @@ export default async function Home() {
 
   return (
     <main className="product-page landing-page">
+      <PageMotion />
       <div className="meta-promo">
         <span>Recruiting intelligence, in action · 拾光人才智能</span>
         <Link href="/jobs">查看精选机会 →</Link>

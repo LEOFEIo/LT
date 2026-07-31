@@ -1834,6 +1834,7 @@
       .suite-head h2,.section-head h2 { font-size: 34px; }
     }
   </style>
+  <link rel="stylesheet" href="layout-fix.css">
 </head>
 <body>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -3040,7 +3041,8 @@
             });
           }, { threshold: .08 })
         : null;
-      document.querySelectorAll(".reveal").forEach((element) => {
+      document.querySelectorAll(".reveal").forEach((element, index) => {
+        element.style.transitionDelay = `${Math.min(index % 4, 3) * 55}ms`;
         if (revealObserver) revealObserver.observe(element);
         else element.classList.add("visible");
       });
@@ -3051,6 +3053,21 @@
         document.documentElement.style.setProperty("--scroll", `${progress}%`);
       };
       window.addEventListener("scroll", syncScroll, { passive: true });
+
+      const heroProduct = document.querySelector(".hero-product");
+      const canTilt = window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (heroProduct && canTilt) {
+        heroProduct.addEventListener("pointermove", (event) => {
+          const bounds = heroProduct.getBoundingClientRect();
+          const x = (event.clientX - bounds.left) / bounds.width - .5;
+          const y = (event.clientY - bounds.top) / bounds.height - .5;
+          heroProduct.style.transform = `perspective(1000px) rotateX(${(-y * 3.5).toFixed(2)}deg) rotateY(${(x * 4.5).toFixed(2)}deg)`;
+        });
+        heroProduct.addEventListener("pointerleave", () => {
+          heroProduct.style.removeProperty("transform");
+        });
+      }
 
       renderCandidates(candidates);
       renderJobs();
