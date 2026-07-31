@@ -9,6 +9,10 @@ export async function GET() {
   const auth = await requireApiAdmin();
   if (auth.response) return auth.response;
 
+  if (!process.env.DATABASE_URL) {
+    return Response.json({ applications: [], storage: "browser" });
+  }
+
   const rows = await getDb()
     .select({
       id: applications.id,

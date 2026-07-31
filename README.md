@@ -1,17 +1,20 @@
 # 拾光 Shiguang Recruiting
 
-一套可直接上传 GitHub 的 AI 人才招聘网站，融合 Tezign 式品牌叙事、DINQ 式人才智能工作流与 Meta 式产品界面。所有页面、品牌、图标、文案和演示数据均为原创。
+一套可直接上传 GitHub、部署到 Vercel 的全栈 AI 人才招聘网站。V6 使用 Apple-inspired 设计系统和 DINQ 式人才智能工作流；所有品牌、图标、文案和演示数据均为原创，与 Apple 无官方关联。
 
 ## 这个版本包含
 
-- Tezign 风格黑色编辑式首页、超大标题、聚光渐变与模块化产品卡
+- Apple-inspired 黑白/浅灰整屏分区、系统字体、单一蓝色交互色与磨砂导航
 - DINQ 式自然语言人才搜索、履历证据、候选清单与个性化触达
+- 交互式招聘计划器：HC、周期、人才难度、漏斗测算、复制与下载计划
+- React 人才搜索：实时 API 查询、本地收藏、双候选人对比
 - JD 智能解析、能力标签、招聘难点与候选人推荐
 - 双候选人能力对比与结构化面试问题生成
 - 招聘 Copilot、`⌘K` 快捷命令与原创 SVG 图标系统
 - GitHub Pages 静态候选人中心和招聘方后台
 - Next.js 候选人端、招聘方驾驶舱和完整管理控制台
 - 精选职位、申请流程、个人档案、CSV 导出与可选 Neon 数据库
+- 无数据库演示降级：档案和申请可安全保存在当前浏览器，不再直接报错
 
 ## 目录入口
 
@@ -58,7 +61,7 @@ git push -u origin main
 3. 分支选择 `main`，目录选择 `/ (root)`。
 4. 保存后访问 GitHub 提供的 Pages 地址。
 
-根目录 `index.html`、`login.html`、`candidate.html` 和 `recruiter.html` 都是无依赖静态页面。首页可直接搜索人才、解析 JD、比较候选人、生成面试题与触达文案；登录后可演示双端后台。
+根目录 `index.html`、`login.html`、`candidate.html` 和 `recruiter.html` 是 GitHub Pages 演示入口。完整产品不是纯静态站：Next.js 版本包含 React 状态、API、登录、候选人端、招聘方后台以及可选 Neon 数据持久化，建议正式使用 Vercel 部署。
 
 ## 本地预览静态版
 

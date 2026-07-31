@@ -9,6 +9,10 @@ export async function GET() {
   const auth = await requireApiUser();
   if (auth.response || !auth.user) return auth.response;
 
+  if (!process.env.DATABASE_URL) {
+    return Response.json({ applications: [], storage: "browser" });
+  }
+
   const rows = await getDb()
     .select({
       id: applications.id,
@@ -50,6 +54,13 @@ export async function POST(request: Request) {
   }
   if (required.some((key) => !text(key))) {
     return Response.json({ error: "请完整填写必填信息" }, { status: 400 });
+  }
+
+  if (!process.env.DATABASE_URL) {
+    return Response.json(
+      { error: "演示环境未连接数据库，请保存到当前浏览器", demo: true },
+      { status: 503 },
+    );
   }
 
   const db = getDb();

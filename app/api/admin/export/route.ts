@@ -11,6 +11,20 @@ export async function GET() {
   const auth = await requireApiAdmin();
   if (auth.response) return auth.response;
 
+  if (!process.env.DATABASE_URL) {
+    const demo = [
+      ["ID", "候选人", "邮箱", "岗位", "流程状态", "说明"],
+      ["DEMO-01", "林知夏", "zhixia@example.com", "AI Infra 平台负责人", "面试中", "演示数据"],
+      ["DEMO-02", "陈嘉树", "jiashu@example.com", "多模态基模算法专家", "顾问沟通", "演示数据"],
+    ];
+    return new Response(`\uFEFF${demo.map((row) => row.map(csvCell).join(",")).join("\n")}`, {
+      headers: {
+        "Content-Type": "text/csv; charset=utf-8",
+        "Content-Disposition": "attachment; filename=shiguang-demo-applications.csv",
+      },
+    });
+  }
+
   const rows = await getDb()
     .select({
       id: applications.id,

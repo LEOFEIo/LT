@@ -29,30 +29,32 @@ export default async function AdminPage() {
     );
   }
 
-  const rows = await getDb()
-    .select({
-      id: applications.id,
-      candidateName: applications.candidateName,
-      userEmail: applications.userEmail,
-      phone: applications.phone,
-      currentCompany: applications.currentCompany,
-      currentSalary: applications.currentSalary,
-      expectedSalary: applications.expectedSalary,
-      jobLevel: applications.jobLevel,
-      promotionStatus: applications.promotionStatus,
-      performancePay: applications.performancePay,
-      motivation: applications.motivation,
-      status: applications.status,
-      consultantNotes: applications.consultantNotes,
-      createdAt: applications.createdAt,
-      updatedAt: applications.updatedAt,
-      jobTitle: jobs.title,
-      jobLocation: jobs.location,
-      jobDomain: jobs.domain,
-    })
-    .from(applications)
-    .innerJoin(jobs, eq(applications.jobId, jobs.id))
-    .orderBy(desc(applications.createdAt));
+  const rows = process.env.DATABASE_URL
+    ? await getDb()
+        .select({
+          id: applications.id,
+          candidateName: applications.candidateName,
+          userEmail: applications.userEmail,
+          phone: applications.phone,
+          currentCompany: applications.currentCompany,
+          currentSalary: applications.currentSalary,
+          expectedSalary: applications.expectedSalary,
+          jobLevel: applications.jobLevel,
+          promotionStatus: applications.promotionStatus,
+          performancePay: applications.performancePay,
+          motivation: applications.motivation,
+          status: applications.status,
+          consultantNotes: applications.consultantNotes,
+          createdAt: applications.createdAt,
+          updatedAt: applications.updatedAt,
+          jobTitle: jobs.title,
+          jobLocation: jobs.location,
+          jobDomain: jobs.domain,
+        })
+        .from(applications)
+        .innerJoin(jobs, eq(applications.jobId, jobs.id))
+        .orderBy(desc(applications.createdAt))
+    : [];
 
   return (
     <main className="admin-page">

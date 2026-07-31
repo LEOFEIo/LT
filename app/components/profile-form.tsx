@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 
 type Profile = {
   fullName: string;
@@ -22,24 +22,56 @@ type Profile = {
 export function ProfileForm({ initialProfile }: { initialProfile: Profile }) {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (initialProfile || !formRef.current) return;
+    try {
+      const stored = JSON.parse(localStorage.getItem("shiguang_local_profile_v1") ?? "null") as Record<string, string> | null;
+      if (!stored) return;
+      Object.entries(stored).forEach(([name, value]) => {
+        const field = formRef.current?.elements.namedItem(name);
+        if (field instanceof HTMLInputElement) {
+          if (field.type === "checkbox") field.checked = value === "published";
+          else field.value = value;
+        }
+        if (field instanceof HTMLTextAreaElement) field.value = value;
+      });
+    } catch {
+      localStorage.removeItem("shiguang_local_profile_v1");
+    }
+  }, [initialProfile]);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSaving(true);
     setMessage("");
     const payload = Object.fromEntries(new FormData(event.currentTarget).entries());
-    const response = await fetch("/api/profile", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const result = (await response.json()) as { error?: string };
-    setSaving(false);
-    setMessage(response.ok ? "档案已保存" : result.error ?? "保存失败");
+    try {
+      const response = await fetch("/api/profile", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = (await response.json()) as { error?: string; demo?: boolean };
+      if (response.ok) {
+        setMessage("档案已安全保存");
+      } else if (response.status === 503 && result.demo) {
+        localStorage.setItem("shiguang_local_profile_v1", JSON.stringify(payload));
+        setMessage("演示档案已保存到当前浏览器");
+      } else {
+        setMessage(result.error ?? "保存失败");
+      }
+    } catch {
+      localStorage.setItem("shiguang_local_profile_v1", JSON.stringify(payload));
+      setMessage("网络不可用，档案已保存到当前浏览器");
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
-    <form className="profile-form" onSubmit={submit}>
+    <form className="profile-form" onSubmit={submit} ref={formRef}>
       <div className="form-grid">
         <label>
           <span>姓名 *</span>

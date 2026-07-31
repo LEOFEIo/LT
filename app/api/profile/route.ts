@@ -9,6 +9,10 @@ export async function GET() {
   const auth = await requireApiUser();
   if (auth.response || !auth.user) return auth.response;
 
+  if (!process.env.DATABASE_URL) {
+    return Response.json({ user: auth.user, profile: null, storage: "browser" });
+  }
+
   const [profile] = await getDb()
     .select()
     .from(profiles)
@@ -57,6 +61,13 @@ export async function PUT(request: Request) {
 
   if (!values.fullName) {
     return Response.json({ error: "姓名不能为空" }, { status: 400 });
+  }
+
+  if (!process.env.DATABASE_URL) {
+    return Response.json(
+      { error: "演示环境未连接数据库，请保存到当前浏览器", demo: true, profile: values },
+      { status: 503 },
+    );
   }
 
   const db = getDb();

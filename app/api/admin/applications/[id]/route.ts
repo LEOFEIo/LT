@@ -44,6 +44,13 @@ export async function PATCH(
     return Response.json({ error: "无效流程状态" }, { status: 400 });
   }
 
+  if (!process.env.DATABASE_URL) {
+    return Response.json(
+      { error: "演示环境未连接数据库，状态仅可在静态招聘方后台本地修改", demo: true },
+      { status: 503 },
+    );
+  }
+
   const [updated] = await getDb()
     .update(applications)
     .set({

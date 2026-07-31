@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { chatGPTSignInPath, getChatGPTUser } from "./chatgpt-auth";
 import { ProductHeader } from "./components/product-header";
+import { HiringPlanner } from "./components/hiring-planner";
 import { TalentPrompt } from "./components/talent-prompt";
 
 export const dynamic = "force-dynamic";
@@ -194,6 +195,15 @@ export default async function Home() {
             <span>{label}</span>
           </article>
         ))}
+      </section>
+
+      <section className="apple-planner-section" id="planner">
+        <header className="apple-tile-heading">
+          <p className="section-kicker">Recruiting plan</p>
+          <h2>把招聘目标，变成一套可执行的计划。</h2>
+          <p>选择方向、人才难度、目标人数和招聘周期，实时生成建议漏斗与每周研究节奏。</p>
+        </header>
+        <HiringPlanner />
       </section>
 
       <section className="landing-section" id="thinking">

@@ -4,20 +4,24 @@ import { getDb } from "../../db";
 import { jobs, profiles } from "../../db/schema";
 import { ProductHeader } from "../components/product-header";
 import { ApplyForm } from "../components/apply-form";
+import { demoJobs } from "../lib/demo-data";
 import { requireUser } from "../lib/server-auth";
 
 export const dynamic = "force-dynamic";
 
 async function ApplyContent({ jobId }: { jobId: number }) {
   const user = await requireUser(`/apply?job=${jobId}`);
-  const [jobRows, profileRows] = await Promise.all([
-    getDb().select().from(jobs).where(eq(jobs.id, jobId)).limit(1),
-    getDb()
-      .select()
-      .from(profiles)
-      .where(eq(profiles.userEmail, user.email))
-      .limit(1),
-  ]);
+  const db = process.env.DATABASE_URL ? getDb() : null;
+  const [jobRows, profileRows] = db
+    ? await Promise.all([
+        db.select().from(jobs).where(eq(jobs.id, jobId)).limit(1),
+        db
+          .select()
+          .from(profiles)
+          .where(eq(profiles.userEmail, user.email))
+          .limit(1),
+      ])
+    : [demoJobs.filter((job) => job.id === jobId), []];
   const job = jobRows[0];
   if (!job || job.status !== "active") notFound();
 

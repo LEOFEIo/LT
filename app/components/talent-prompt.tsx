@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
 
 const suggestions = [
   "懂千卡训练与推理优化的人",
@@ -49,6 +49,36 @@ export function TalentPrompt() {
   const [isSearching, setIsSearching] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [results, setResults] = useState<TalentResult[]>(fallbackResults);
+  const [savedIds, setSavedIds] = useState<number[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const stored = JSON.parse(localStorage.getItem("shiguang_next_shortlist_v1") ?? "[]") as number[];
+      return Array.isArray(stored) ? stored.filter(Number.isInteger) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [compareIds, setCompareIds] = useState<number[]>([]);
+
+  const compared = useMemo(
+    () => compareIds.map((id) => results.find((result) => result.id === id)).filter(Boolean) as TalentResult[],
+    [compareIds, results],
+  );
+
+  function toggleSaved(id: number) {
+    setSavedIds((current) => {
+      const next = current.includes(id) ? current.filter((item) => item !== id) : [...current, id];
+      localStorage.setItem("shiguang_next_shortlist_v1", JSON.stringify(next));
+      return next;
+    });
+  }
+
+  function toggleCompare(id: number) {
+    setCompareIds((current) => {
+      if (current.includes(id)) return current.filter((item) => item !== id);
+      return current.length >= 2 ? [current[1], id] : [...current, id];
+    });
+  }
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -115,7 +145,7 @@ export function TalentPrompt() {
             <>
               <div className="results-head">
                 <span>为你找到的高相关人才</span>
-                <a href="/workspace">进入完整搜索 ↗</a>
+                <span>{savedIds.length} 位已收藏 · 选择 2 位进行对比</span>
               </div>
               {results.map((result) => (
                 <article key={result.id} className="mini-result">
@@ -128,8 +158,42 @@ export function TalentPrompt() {
                     {result.evidenceCount} 项证据 · {result.sourceCount} 个来源
                   </small>
                   <b>{result.matchScore}%</b>
+                  <div className="mini-result-actions">
+                    <button
+                      aria-pressed={savedIds.includes(result.id)}
+                      onClick={() => toggleSaved(result.id)}
+                      type="button"
+                    >
+                      {savedIds.includes(result.id) ? "已收藏" : "收藏"}
+                    </button>
+                    <button
+                      aria-pressed={compareIds.includes(result.id)}
+                      onClick={() => toggleCompare(result.id)}
+                      type="button"
+                    >
+                      {compareIds.includes(result.id) ? "已选" : "对比"}
+                    </button>
+                  </div>
                 </article>
               ))}
+              {compared.length === 2 && (
+                <div className="talent-compare-panel">
+                  <div>
+                    <span>{compared[0].name}</span>
+                    <strong>{compared[0].matchScore}%</strong>
+                    <small>{compared[0].evidenceCount} 项证据</small>
+                  </div>
+                  <i>VS</i>
+                  <div>
+                    <span>{compared[1].name}</span>
+                    <strong>{compared[1].matchScore}%</strong>
+                    <small>{compared[1].evidenceCount} 项证据</small>
+                  </div>
+                  <p>
+                    当前建议优先深入验证 <b>{compared[0].matchScore >= compared[1].matchScore ? compared[0].name : compared[1].name}</b>，同时保留另一位作为互补样本。
+                  </p>
+                </div>
+              )}
             </>
           )}
         </div>

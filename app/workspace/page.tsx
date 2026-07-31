@@ -5,6 +5,7 @@ import { getDb } from "../../db";
 import { applications, jobs, profiles } from "../../db/schema";
 import { ProfileForm } from "../components/profile-form";
 import { ProductHeader } from "../components/product-header";
+import { demoJobs } from "../lib/demo-data";
 import { requireUser } from "../lib/server-auth";
 
 export const dynamic = "force-dynamic";
@@ -26,30 +27,32 @@ const statusLabels: Record<string, string> = {
 
 export default async function WorkspacePage() {
   const user = await requireUser("/workspace");
-  const db = getDb();
-  const [profileRows, applicationRows, recommendedJobs] = await Promise.all([
-    db
-      .select()
-      .from(profiles)
-      .where(eq(profiles.userEmail, user.email))
-      .limit(1),
-    db
-      .select({
-        id: applications.id,
-        status: applications.status,
-        createdAt: applications.createdAt,
-        updatedAt: applications.updatedAt,
-        jobTitle: jobs.title,
-        jobSlug: jobs.slug,
-        location: jobs.location,
-        domain: jobs.domain,
-      })
-      .from(applications)
-      .innerJoin(jobs, eq(applications.jobId, jobs.id))
-      .where(eq(applications.userEmail, user.email))
-      .orderBy(desc(applications.createdAt)),
-    db.select().from(jobs).where(eq(jobs.status, "active")).limit(3),
-  ]);
+  const db = process.env.DATABASE_URL ? getDb() : null;
+  const [profileRows, applicationRows, recommendedJobs] = db
+    ? await Promise.all([
+        db
+          .select()
+          .from(profiles)
+          .where(eq(profiles.userEmail, user.email))
+          .limit(1),
+        db
+          .select({
+            id: applications.id,
+            status: applications.status,
+            createdAt: applications.createdAt,
+            updatedAt: applications.updatedAt,
+            jobTitle: jobs.title,
+            jobSlug: jobs.slug,
+            location: jobs.location,
+            domain: jobs.domain,
+          })
+          .from(applications)
+          .innerJoin(jobs, eq(applications.jobId, jobs.id))
+          .where(eq(applications.userEmail, user.email))
+          .orderBy(desc(applications.createdAt)),
+        db.select().from(jobs).where(eq(jobs.status, "active")).limit(3),
+      ])
+    : [[], [], demoJobs.slice(0, 3)];
   const profile = profileRows[0] ?? null;
   const completeness = profile
     ? Math.round(

@@ -23,6 +23,7 @@ export function ApplyForm({
   const [message, setMessage] = useState("");
   const [saving, setSaving] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [demoMode, setDemoMode] = useState(false);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -30,18 +31,40 @@ export function ApplyForm({
     setMessage("");
     const form = new FormData(event.currentTarget);
     const payload = Object.fromEntries(form.entries());
-    const response = await fetch("/api/applications", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...payload, jobId: job.id }),
-    });
-    const data = (await response.json()) as { error?: string };
-    setSaving(false);
-    if (!response.ok) {
-      setMessage(data.error ?? "提交失败，请稍后再试");
-      return;
+    const saveLocal = () => {
+      const key = "shiguang_local_applications_v1";
+      try {
+        const current = JSON.parse(localStorage.getItem(key) ?? "[]") as unknown[];
+        localStorage.setItem(key, JSON.stringify([
+          { ...payload, jobId: job.id, jobTitle: job.title, createdAt: new Date().toISOString(), status: "new" },
+          ...(Array.isArray(current) ? current : []),
+        ]));
+      } catch {
+        localStorage.setItem(key, JSON.stringify([{ ...payload, jobId: job.id, jobTitle: job.title, status: "new" }]));
+      }
+      setDemoMode(true);
+      setSubmitted(true);
+    };
+
+    try {
+      const response = await fetch("/api/applications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...payload, jobId: job.id }),
+      });
+      const data = (await response.json()) as { error?: string; demo?: boolean };
+      if (response.ok) {
+        setSubmitted(true);
+      } else if (response.status === 503 && data.demo) {
+        saveLocal();
+      } else {
+        setMessage(data.error ?? "提交失败，请稍后再试");
+      }
+    } catch {
+      saveLocal();
+    } finally {
+      setSaving(false);
     }
-    setSubmitted(true);
   }
 
   if (submitted) {
@@ -50,7 +73,9 @@ export function ApplyForm({
         <span>✓</span>
         <h2>意向已提交</h2>
         <p>
-          顾问已收到你对「{job.title}」的申请。后续状态会同步到个人工作台。
+          {demoMode
+            ? `你对「${job.title}」的意向已保存在当前浏览器，可继续体验候选人流程。`
+            : `顾问已收到你对「${job.title}」的申请。后续状态会同步到个人工作台。`}
         </p>
         <a className="primary-button" href="/workspace">
           查看工作台 ↗
