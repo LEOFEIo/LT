@@ -1,0 +1,1805 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="拾光是一套面向 AI 与科技人才的智能招聘产品，从代码、论文、产品与公开工作中发现真正匹配的人。">
+  <title>拾光 Shiguang — AI 人才智能</title>
+  <style>
+    :root {
+      --canvas: #ffffff;
+      --surface: #f1f4f7;
+      --surface-2: #e9eef3;
+      --ink-deep: #0a1317;
+      --ink: #1c1e21;
+      --charcoal: #444950;
+      --steel: #5d6c7b;
+      --stone: #8595a4;
+      --line: #ced0d4;
+      --line-soft: #dee3e9;
+      --blue: #0064e0;
+      --blue-deep: #0457cb;
+      --green: #31a24c;
+      --purple: #a121ce;
+      --warning: #f7b928;
+      --danger: #e41e3f;
+      --page: min(1280px, calc(100vw - 64px));
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --pill: 999px;
+      --ease: cubic-bezier(.22, 1, .36, 1);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--canvas);
+      font-family: Montserrat, Helvetica, Arial, "Noto Sans SC", "PingFang SC", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: -.16px;
+      overflow-x: hidden;
+    }
+    body.drawer-open,
+    body.menu-open { overflow: hidden; }
+    button, input, textarea, select { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { color: inherit; }
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; }
+    ::selection { color: #fff; background: var(--blue); }
+    :focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+    .skip-link {
+      position: fixed;
+      z-index: 1000;
+      left: 20px;
+      top: -60px;
+      padding: 10px 16px;
+      color: #fff;
+      background: var(--blue);
+      border-radius: var(--pill);
+      transition: top .2s ease;
+    }
+    .skip-link:focus { top: 16px; }
+    .scroll-progress {
+      position: fixed;
+      z-index: 500;
+      inset: 0 auto auto 0;
+      width: var(--scroll, 0%);
+      height: 3px;
+      background: var(--ink-deep);
+    }
+
+    .promo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 8px 24px;
+      color: #fff;
+      background: var(--ink-deep);
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .promo a { margin-left: 14px; text-decoration: underline; text-underline-offset: 3px; }
+
+    .site-header {
+      position: sticky;
+      z-index: 200;
+      top: 0;
+      background: rgba(255,255,255,.94);
+      border-bottom: 1px solid var(--line-soft);
+      backdrop-filter: blur(18px);
+    }
+    .nav {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      width: var(--page);
+      min-height: 68px;
+      margin: auto;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      width: max-content;
+      color: var(--ink-deep);
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -.6px;
+    }
+    .brand-mark {
+      position: relative;
+      width: 35px;
+      height: 24px;
+    }
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      width: 17px;
+      height: 17px;
+      border: 3px solid var(--ink-deep);
+      border-radius: 50%;
+      transform: rotate(-16deg);
+    }
+    .brand-mark::before { left: 2px; border-right-color: transparent; }
+    .brand-mark::after { right: 2px; border-left-color: transparent; transform: rotate(16deg); }
+    .brand small {
+      color: var(--stone);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .nav-links a {
+      min-height: 40px;
+      padding: 10px 16px;
+      border-radius: var(--pill);
+      color: var(--steel);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .nav-links a:active,
+    .nav-links a.active { color: #fff; background: var(--ink-deep); }
+    .nav-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+    }
+    .shortlist-btn,
+    .menu-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      border: 1px solid var(--line-soft);
+      background: #fff;
+      border-radius: var(--pill);
+      cursor: pointer;
+    }
+    .shortlist-btn { gap: 8px; padding: 0 15px; font-size: 13px; font-weight: 700; }
+    .shortlist-count {
+      display: grid;
+      place-items: center;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 6px;
+      color: #fff;
+      background: var(--ink-deep);
+      border-radius: var(--pill);
+      font-size: 11px;
+    }
+    .menu-btn {
+      display: none;
+      width: 44px;
+      padding: 0;
+    }
+    .menu-lines,
+    .menu-lines::before,
+    .menu-lines::after {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: var(--ink-deep);
+      border-radius: 2px;
+    }
+    .menu-lines { position: relative; }
+    .menu-lines::before,
+    .menu-lines::after { content: ""; position: absolute; left: 0; }
+    .menu-lines::before { top: -6px; }
+    .menu-lines::after { top: 6px; }
+    .mobile-menu {
+      position: fixed;
+      z-index: 190;
+      inset: 108px 0 0;
+      display: none;
+      padding: 24px;
+      background: #fff;
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-menu a {
+      display: block;
+      padding: 18px 4px;
+      border-bottom: 1px solid var(--line-soft);
+      font-size: 26px;
+      font-weight: 500;
+      letter-spacing: -1px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 48px;
+      padding: 13px 28px;
+      border: 2px solid var(--ink-deep);
+      border-radius: var(--pill);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .2s var(--ease), background .2s ease;
+    }
+    .button:active { transform: scale(.98); }
+    .button.dark { color: #fff; background: #000; }
+    .button.dark:active { background: var(--charcoal); }
+    .button.ghost { color: var(--ink-deep); background: transparent; }
+    .button.blue { color: #fff; background: var(--blue); border-color: var(--blue); }
+    .button.blue:active { background: var(--blue-deep); }
+    .button.small { min-height: 42px; padding: 10px 20px; font-size: 13px; }
+    .arrow { font-size: 17px; line-height: 1; }
+
+    .hero {
+      position: relative;
+      width: var(--page);
+      min-height: 720px;
+      margin: 0 auto;
+      padding: 86px 0 72px;
+      overflow: hidden;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, .92fr) minmax(460px, 1.08fr);
+      gap: 70px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 22px;
+      color: var(--steel);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 24px;
+      height: 2px;
+      background: currentColor;
+    }
+    .hero h1 {
+      max-width: 680px;
+      margin: 0;
+      color: var(--ink-deep);
+      font-size: clamp(50px, 5.4vw, 78px);
+      font-weight: 500;
+      line-height: 1.06;
+      letter-spacing: -4.2px;
+      font-feature-settings: "ss01", "ss02";
+    }
+    .hero h1 span { display: block; color: var(--steel); }
+    .hero-lead {
+      max-width: 590px;
+      margin: 28px 0 30px;
+      color: var(--charcoal);
+      font-size: 18px;
+      line-height: 1.62;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .hero-proof {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 32px;
+      color: var(--steel);
+      font-size: 13px;
+    }
+    .avatar-stack { display: flex; }
+    .avatar-stack span {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      margin-left: -7px;
+      color: #fff;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      background: var(--ink-deep);
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .avatar-stack span:first-child { margin-left: 0; background: var(--blue); }
+    .avatar-stack span:nth-child(2) { background: var(--purple); }
+    .avatar-stack span:nth-child(3) { color: var(--ink-deep); background: var(--warning); }
+
+    .hero-product {
+      position: relative;
+      min-height: 560px;
+      padding: 26px;
+      border-radius: 40px;
+      background: var(--surface);
+      overflow: hidden;
+    }
+    .hero-product::before {
+      content: "";
+      position: absolute;
+      right: -110px;
+      top: -150px;
+      width: 390px;
+      height: 390px;
+      border: 1px solid rgba(10,19,23,.12);
+      border-radius: 50%;
+      box-shadow: 0 0 0 54px rgba(255,255,255,.32), 0 0 0 108px rgba(255,255,255,.22);
+    }
+    .product-top,
+    .product-footer {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .product-name { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 800; }
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 0 5px rgba(49,162,76,.12);
+    }
+    .source-pill,
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 5px 11px;
+      border: 1px solid rgba(10,19,23,.1);
+      border-radius: var(--pill);
+      background: rgba(255,255,255,.74);
+      color: var(--steel);
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .talent-preview {
+      position: relative;
+      z-index: 2;
+      max-width: 430px;
+      margin: 80px auto 34px;
+      padding: 26px;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-lg);
+      background: #fff;
+    }
+    .preview-score {
+      position: absolute;
+      top: -23px;
+      right: 24px;
+      display: grid;
+      place-items: center;
+      width: 68px;
+      height: 68px;
+      color: #fff;
+      background: var(--blue);
+      border: 6px solid var(--surface);
+      border-radius: 50%;
+      font-size: 17px;
+      font-weight: 800;
+    }
+    .profile-head { display: flex; align-items: center; gap: 14px; padding-right: 56px; }
+    .avatar {
+      display: grid;
+      flex: 0 0 auto;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      color: #fff;
+      border-radius: 50%;
+      background: var(--ink-deep);
+      font-size: 17px;
+      font-weight: 800;
+    }
+    .profile-head h2,
+    .profile-head h3 { margin: 0 0 5px; font-size: 18px; }
+    .profile-head p { margin: 0; color: var(--steel); font-size: 12px; line-height: 1.4; }
+    .skill-row { display: flex; flex-wrap: wrap; gap: 7px; margin: 22px 0; }
+    .skill-row span,
+    .chip {
+      padding: 7px 11px;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--pill);
+      background: #fff;
+      color: var(--charcoal);
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .evidence-mini {
+      display: grid;
+      gap: 10px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line-soft);
+    }
+    .evidence-mini div { display: flex; justify-content: space-between; gap: 18px; font-size: 12px; }
+    .evidence-mini span { color: var(--steel); }
+    .evidence-mini b { color: var(--ink-deep); text-align: right; }
+    .product-footer { color: var(--steel); font-size: 11px; font-weight: 700; }
+    .product-footer span:last-child { color: var(--green); }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      width: var(--page);
+      margin: 0 auto 96px;
+      border-top: 1px solid var(--line-soft);
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .metric { padding: 27px 24px; border-right: 1px solid var(--line-soft); }
+    .metric:last-child { border: 0; }
+    .metric strong { display: block; color: var(--ink-deep); font-size: 27px; font-weight: 500; }
+    .metric span { display: block; margin-top: 6px; color: var(--steel); font-size: 12px; }
+
+    .section {
+      width: var(--page);
+      margin: 0 auto;
+      padding: 88px 0;
+    }
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+      gap: 56px;
+      align-items: end;
+      margin-bottom: 42px;
+    }
+    .section-head h2 {
+      max-width: 760px;
+      margin: 0;
+      color: var(--ink-deep);
+      font-size: clamp(38px, 4.3vw, 58px);
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -2.7px;
+      font-feature-settings: "ss01", "ss02";
+    }
+    .section-head > p {
+      margin: 0 0 4px;
+      color: var(--steel);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+    .section-kicker {
+      display: block;
+      margin: 0 0 14px;
+      color: var(--steel);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
+    }
+
+    .search-lab {
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: #fff;
+    }
+    .lab-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--line-soft);
+      background: var(--surface);
+      font-size: 12px;
+    }
+    .lab-title { display: flex; align-items: center; gap: 10px; font-weight: 800; }
+    .lab-meta { display: flex; gap: 9px; color: var(--steel); }
+    .lab-meta span { padding: 6px 10px; border-radius: var(--pill); background: #fff; }
+    .search-panel { padding: 28px; }
+    .search-compose {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      padding: 9px 9px 9px 20px;
+      border: 2px solid var(--ink-deep);
+      border-radius: var(--radius-md);
+      background: #fff;
+    }
+    .search-compose textarea {
+      width: 100%;
+      min-height: 56px;
+      padding: 10px 0;
+      color: var(--ink-deep);
+      border: 0;
+      outline: 0;
+      resize: none;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .search-compose .button { align-self: center; }
+    .prompt-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 24px; }
+    .prompt-chip {
+      min-height: 38px;
+      padding: 8px 13px;
+      border: 1px solid var(--line);
+      border-radius: var(--pill);
+      background: #fff;
+      color: var(--steel);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .prompt-chip[aria-pressed="true"] { color: #fff; border-color: var(--ink-deep); background: var(--ink-deep); }
+    .search-state {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 13px 0;
+      color: var(--steel);
+      border-top: 1px solid var(--line-soft);
+      border-bottom: 1px solid var(--line-soft);
+      font-size: 12px;
+    }
+    .progress-track {
+      height: 5px;
+      border-radius: var(--pill);
+      background: var(--surface-2);
+      overflow: hidden;
+    }
+    .progress-track i {
+      display: block;
+      width: var(--match-progress, 100%);
+      height: 100%;
+      border-radius: inherit;
+      background: var(--blue);
+      transition: width .8s var(--ease);
+    }
+    .results-head,
+    .candidate-row {
+      display: grid;
+      grid-template-columns: minmax(210px, 1.2fr) minmax(180px, 1fr) 120px 112px 46px;
+      gap: 16px;
+      align-items: center;
+    }
+    .results-head {
+      padding: 18px 14px 10px;
+      color: var(--stone);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+    }
+    .candidate-list { min-height: 414px; }
+    .candidate-row {
+      width: 100%;
+      min-height: 78px;
+      padding: 13px 14px;
+      border: 0;
+      border-top: 1px solid var(--line-soft);
+      background: #fff;
+      text-align: left;
+      cursor: pointer;
+    }
+    .candidate-row:active { background: var(--surface); }
+    .candidate-name { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .candidate-name .avatar { width: 42px; height: 42px; font-size: 14px; }
+    .candidate-name div { min-width: 0; }
+    .candidate-name b,
+    .candidate-name small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .candidate-name b { margin-bottom: 4px; font-size: 14px; }
+    .candidate-name small { color: var(--steel); font-size: 11px; }
+    .candidate-skills { display: flex; gap: 5px; overflow: hidden; }
+    .candidate-skills span {
+      flex: 0 0 auto;
+      padding: 5px 8px;
+      border-radius: var(--pill);
+      background: var(--surface);
+      color: var(--charcoal);
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .signal { color: var(--steel); font-size: 11px; line-height: 1.35; }
+    .match {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .match::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+    .row-arrow {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--line-soft);
+      border-radius: 50%;
+      font-size: 16px;
+    }
+    .empty-state {
+      display: grid;
+      place-items: center;
+      min-height: 340px;
+      color: var(--steel);
+      text-align: center;
+    }
+    .empty-state b { display: block; margin-bottom: 8px; color: var(--ink-deep); }
+
+    .evidence-section { background: var(--surface); }
+    .evidence-wrap { width: var(--page); margin: auto; padding: 96px 0; }
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: .86fr 1.14fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+    .story-card,
+    .proof-card {
+      border-radius: var(--radius-xl);
+      background: #fff;
+      overflow: hidden;
+    }
+    .story-card { padding: 42px; }
+    .story-card h3 { margin: 0; font-size: 30px; font-weight: 500; letter-spacing: -1px; }
+    .story-card > p { color: var(--steel); font-size: 15px; line-height: 1.65; }
+    .quote {
+      margin-top: 60px;
+      padding: 25px 0 0;
+      border-top: 1px solid var(--line-soft);
+      color: var(--ink-deep);
+      font-size: 21px;
+      font-weight: 500;
+      line-height: 1.45;
+    }
+    .quote small { display: block; margin-top: 18px; color: var(--steel); font-size: 12px; font-weight: 400; }
+    .proof-card { padding: 28px; }
+    .proof-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+    .proof-head b { font-size: 14px; }
+    .verify-pill { padding: 6px 10px; color: var(--green); border-radius: var(--pill); background: rgba(49,162,76,.1); font-size: 10px; font-weight: 800; }
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .compare article {
+      min-height: 245px;
+      padding: 24px;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-md);
+    }
+    .compare article:last-child { color: #fff; border-color: var(--ink-deep); background: var(--ink-deep); }
+    .compare-label { display: flex; justify-content: space-between; color: var(--stone); font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+    .compare article:last-child .compare-label { color: #aeb9c2; }
+    .compare h4 { margin: 42px 0 12px; font-size: 21px; font-weight: 500; line-height: 1.3; }
+    .compare p { margin: 0; color: var(--steel); font-size: 13px; line-height: 1.6; }
+    .compare article:last-child p { color: #cbd3da; }
+    .proof-sources { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+    .proof-sources span { padding: 11px; border-radius: var(--radius-sm); background: var(--surface); color: var(--steel); font-size: 10px; text-align: center; font-weight: 700; }
+
+    .outreach-grid {
+      display: grid;
+      grid-template-columns: minmax(260px, .7fr) minmax(0, 1.3fr);
+      gap: 24px;
+    }
+    .outreach-control,
+    .message-card {
+      padding: 30px;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-xl);
+      background: #fff;
+    }
+    .outreach-control { background: var(--surface); border-color: var(--surface); }
+    .field { margin-bottom: 22px; }
+    .field label { display: block; margin-bottom: 9px; color: var(--steel); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; }
+    .field select {
+      width: 100%;
+      height: 48px;
+      padding: 0 14px;
+      color: var(--ink-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      outline: 0;
+    }
+    .field select:focus { border: 2px solid var(--blue); }
+    .tone-tabs { display: flex; gap: 7px; }
+    .tone-tab {
+      flex: 1;
+      min-height: 40px;
+      padding: 8px;
+      color: var(--steel);
+      border: 1px solid var(--line);
+      border-radius: var(--pill);
+      background: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .tone-tab.active { color: #fff; border-color: var(--ink-deep); background: var(--ink-deep); }
+    .outreach-control .button { width: 100%; margin-top: 8px; }
+    .message-card { position: relative; min-height: 370px; }
+    .message-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid var(--line-soft); }
+    .message-recipient { display: flex; align-items: center; gap: 10px; }
+    .message-recipient .avatar { width: 38px; height: 38px; font-size: 12px; }
+    .message-recipient b { display: block; font-size: 13px; }
+    .message-recipient span { display: block; margin-top: 3px; color: var(--steel); font-size: 10px; }
+    .copy-btn {
+      min-height: 38px;
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--pill);
+      background: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .message-body {
+      min-height: 220px;
+      padding: 26px 4px;
+      color: var(--charcoal);
+      font-size: 15px;
+      line-height: 1.8;
+      white-space: pre-line;
+    }
+    .message-foot { display: flex; justify-content: space-between; color: var(--stone); font-size: 10px; }
+
+    .jobs-section { background: var(--ink-deep); color: #fff; }
+    .jobs-wrap { width: var(--page); margin: auto; padding: 98px 0; }
+    .jobs-wrap .section-head h2 { color: #fff; }
+    .jobs-wrap .section-head > p,
+    .jobs-wrap .section-kicker { color: #aeb9c2; }
+    .job-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+    .job-filter {
+      min-height: 40px;
+      padding: 9px 15px;
+      color: #cbd3da;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: var(--pill);
+      background: transparent;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .job-filter.active { color: var(--ink-deep); border-color: #fff; background: #fff; }
+    .job-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .job-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 290px;
+      padding: 28px;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,.04);
+    }
+    .job-top { display: flex; justify-content: space-between; align-items: center; color: #aeb9c2; font-size: 10px; font-weight: 800; }
+    .job-top span:last-child { padding: 6px 9px; border-radius: var(--pill); background: rgba(255,255,255,.08); }
+    .job-card h3 { margin: 44px 0 12px; font-size: 24px; font-weight: 500; line-height: 1.25; letter-spacing: -.8px; }
+    .job-card > p { margin: 0; color: #aeb9c2; font-size: 13px; line-height: 1.55; }
+    .job-bottom { display: flex; justify-content: space-between; align-items: end; margin-top: auto; padding-top: 25px; }
+    .job-bottom b { font-size: 12px; }
+    .job-open {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      color: var(--ink-deep);
+      border: 0;
+      border-radius: 50%;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .workflow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .workflow-card {
+      min-height: 270px;
+      padding: 28px;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-md);
+    }
+    .workflow-number {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      color: #fff;
+      background: var(--ink-deep);
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .workflow-card h3 { margin: 60px 0 12px; font-size: 20px; font-weight: 500; }
+    .workflow-card p { margin: 0; color: var(--steel); font-size: 13px; line-height: 1.6; }
+    .workflow-card small { display: block; margin-top: 18px; color: var(--green); font-size: 10px; font-weight: 800; }
+
+    .faq-list { display: grid; gap: 10px; max-width: 900px; margin-left: auto; }
+    .faq-list details {
+      padding: 0 24px;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-md);
+      background: #fff;
+    }
+    .faq-list summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 78px;
+      cursor: pointer;
+      list-style: none;
+      font-size: 17px;
+      font-weight: 700;
+    }
+    .faq-list summary::-webkit-details-marker { display: none; }
+    .faq-list summary::after { content: "+"; color: var(--steel); font-size: 24px; font-weight: 400; }
+    .faq-list details[open] summary::after { content: "−"; }
+    .faq-list details p { max-width: 740px; margin: -4px 0 24px; color: var(--steel); font-size: 14px; line-height: 1.7; }
+
+    .final-cta {
+      width: var(--page);
+      margin: 20px auto 96px;
+      padding: 68px;
+      color: #fff;
+      border-radius: var(--radius-xl);
+      background: var(--ink-deep);
+    }
+    .final-cta h2 { max-width: 760px; margin: 0 0 30px; font-size: clamp(38px, 5vw, 64px); font-weight: 500; line-height: 1.08; letter-spacing: -3px; }
+    .final-cta .button { color: var(--ink-deep); border-color: #fff; background: #fff; }
+
+    footer {
+      padding: 62px 0 28px;
+      border-top: 1px solid var(--line-soft);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, 1fr);
+      gap: 48px;
+      width: var(--page);
+      margin: auto;
+    }
+    .footer-note { max-width: 330px; margin-top: 20px; color: var(--steel); font-size: 13px; line-height: 1.6; }
+    .footer-col b { display: block; margin-bottom: 18px; font-size: 12px; }
+    .footer-col a { display: block; margin: 12px 0; color: var(--steel); font-size: 12px; }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      width: var(--page);
+      margin: 48px auto 0;
+      padding-top: 22px;
+      color: var(--stone);
+      border-top: 1px solid var(--line-soft);
+      font-size: 10px;
+    }
+
+    .drawer-backdrop {
+      position: fixed;
+      z-index: 400;
+      inset: 0;
+      visibility: hidden;
+      opacity: 0;
+      background: rgba(10,19,23,.38);
+      transition: opacity .24s ease, visibility .24s;
+    }
+    .drawer-backdrop.open { visibility: visible; opacity: 1; }
+    .profile-drawer {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: min(560px, 100%);
+      height: 100%;
+      padding: 28px;
+      background: #fff;
+      overflow: auto;
+      transform: translateX(100%);
+      transition: transform .32s var(--ease);
+    }
+    .drawer-backdrop.open .profile-drawer { transform: translateX(0); }
+    .drawer-close {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      margin-left: auto;
+      border: 1px solid var(--line-soft);
+      border-radius: 50%;
+      background: #fff;
+      cursor: pointer;
+      font-size: 22px;
+    }
+    .drawer-profile { margin-top: 18px; }
+    .drawer-profile .avatar { width: 68px; height: 68px; font-size: 21px; }
+    .drawer-profile h2 { margin: 22px 0 5px; font-size: 36px; font-weight: 500; letter-spacing: -1.4px; }
+    .drawer-profile > p { margin: 0; color: var(--steel); font-size: 14px; }
+    .drawer-score { display: flex; align-items: end; justify-content: space-between; margin: 32px 0; padding: 24px; border-radius: var(--radius-md); background: var(--surface); }
+    .drawer-score span { color: var(--steel); font-size: 11px; font-weight: 800; }
+    .drawer-score b { color: var(--blue); font-size: 34px; font-weight: 500; }
+    .drawer-block { padding: 25px 0; border-top: 1px solid var(--line-soft); }
+    .drawer-block h3 { margin: 0 0 14px; font-size: 13px; }
+    .drawer-block p { color: var(--steel); font-size: 13px; line-height: 1.65; }
+    .evidence-list { display: grid; gap: 9px; }
+    .evidence-list div { padding: 14px; border-radius: var(--radius-sm); background: var(--surface); }
+    .evidence-list b { display: block; margin-bottom: 4px; font-size: 12px; }
+    .evidence-list span { color: var(--steel); font-size: 11px; line-height: 1.5; }
+    .drawer-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; padding: 20px 0 6px; }
+
+    .toast {
+      position: fixed;
+      z-index: 600;
+      left: 50%;
+      bottom: 24px;
+      max-width: calc(100vw - 32px);
+      padding: 13px 20px;
+      color: #fff;
+      border-radius: var(--pill);
+      background: var(--ink-deep);
+      box-shadow: rgba(20,22,26,.24) 0 4px 18px;
+      font-size: 12px;
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 16px);
+      transition: .25s var(--ease);
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (hover: hover) and (pointer: fine) {
+      .nav-links a:hover { color: var(--ink-deep); background: var(--surface); }
+      .button:hover { transform: translateY(-2px); }
+      .candidate-row:hover { background: var(--surface); }
+      .job-card:hover { border-color: rgba(255,255,255,.36); }
+      .footer-col a:hover { color: var(--ink-deep); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+    @media (max-width: 1023px) {
+      :root { --page: min(100% - 48px, 920px); }
+      .nav { grid-template-columns: 1fr auto; }
+      .nav-links { display: none; }
+      .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+      .hero-copy { max-width: 760px; }
+      .hero-product { min-height: 520px; }
+      .section-head { grid-template-columns: 1fr; gap: 16px; }
+      .evidence-grid { grid-template-columns: 1fr; }
+      .outreach-grid { grid-template-columns: .8fr 1.2fr; }
+      .job-grid { grid-template-columns: repeat(2, 1fr); }
+      .workflow-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1.4fr repeat(3, 1fr); gap: 28px; }
+    }
+    @media (max-width: 767px) {
+      :root { --page: calc(100% - 32px); }
+      .promo { justify-content: flex-start; min-height: 40px; padding: 8px 16px; overflow: hidden; white-space: nowrap; }
+      .promo span { overflow: hidden; text-overflow: ellipsis; }
+      .promo a { flex: 0 0 auto; }
+      .nav { min-height: 64px; }
+      .brand small,
+      .shortlist-btn > span:first-child { display: none; }
+      .menu-btn { display: inline-flex; }
+      .hero { min-height: 0; padding: 66px 0 56px; }
+      .hero h1 { font-size: clamp(43px, 13vw, 62px); letter-spacing: -3px; }
+      .hero-lead { font-size: 16px; }
+      .hero-product { min-height: 480px; padding: 18px; border-radius: var(--radius-xl); }
+      .talent-preview { margin-top: 72px; padding: 21px; }
+      .metrics { grid-template-columns: repeat(2, 1fr); margin-bottom: 54px; }
+      .metric:nth-child(2) { border-right: 0; }
+      .metric:nth-child(-n+2) { border-bottom: 1px solid var(--line-soft); }
+      .section,
+      .evidence-wrap,
+      .jobs-wrap { padding: 64px 0; }
+      .section-head h2 { font-size: 39px; letter-spacing: -2px; }
+      .lab-bar { align-items: flex-start; gap: 8px; }
+      .lab-meta span:first-child { display: none; }
+      .search-panel { padding: 18px; }
+      .search-compose { grid-template-columns: 1fr; padding: 10px; }
+      .search-compose textarea { padding: 8px; }
+      .search-compose .button { width: 100%; }
+      .results-head { display: none; }
+      .candidate-list { min-height: 0; }
+      .candidate-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 10px;
+        padding: 16px 4px;
+      }
+      .candidate-skills,
+      .signal { display: none; }
+      .match { justify-self: end; }
+      .row-arrow { display: none; }
+      .story-card,
+      .proof-card { padding: 24px; }
+      .quote { margin-top: 40px; }
+      .compare { grid-template-columns: 1fr; }
+      .compare article { min-height: 215px; }
+      .outreach-grid { grid-template-columns: 1fr; }
+      .outreach-control,
+      .message-card { padding: 22px; }
+      .job-grid { grid-template-columns: 1fr; }
+      .workflow-grid { grid-template-columns: 1fr; }
+      .workflow-card { min-height: 230px; }
+      .final-cta { margin-bottom: 64px; padding: 40px 24px; }
+      .final-cta h2 { letter-spacing: -2px; }
+      .footer-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-brand { grid-column: 1 / -1; }
+      .footer-bottom { flex-direction: column; gap: 8px; }
+      .profile-drawer { padding: 20px; }
+    }
+    @media (max-width: 479px) {
+      .hero-actions .button { width: 100%; }
+      .hero-proof { align-items: flex-start; flex-direction: column; }
+      .talent-preview { margin-top: 62px; }
+      .preview-score { right: 12px; }
+      .product-footer { align-items: flex-start; flex-direction: column; gap: 7px; }
+      .metrics { width: 100%; }
+      .metric { padding: 24px 18px; }
+      .proof-sources { grid-template-columns: 1fr; }
+      .tone-tabs { flex-direction: column; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .drawer-actions { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <div class="promo">
+    <span>拾光 Talent Intelligence · 全新人才研究工作台</span>
+    <a href="#search">立即体验 →</a>
+  </div>
+
+  <header class="site-header">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="#" aria-label="拾光首页">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>拾光</span>
+        <small>SHIGUANG</small>
+      </a>
+      <div class="nav-links">
+        <a class="active" href="#search">人才搜索</a>
+        <a href="#evidence">能力证据</a>
+        <a href="#outreach">智能触达</a>
+        <a href="#jobs">精选机会</a>
+      </div>
+      <div class="nav-actions">
+        <button class="shortlist-btn" id="shortlistButton" type="button">
+          <span>候选清单</span>
+          <span class="shortlist-count" id="shortlistCount">0</span>
+        </button>
+        <button class="menu-btn" id="menuButton" type="button" aria-label="打开菜单" aria-expanded="false">
+          <span class="menu-lines" aria-hidden="true"></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#search">人才搜索</a>
+    <a href="#evidence">能力证据</a>
+    <a href="#outreach">智能触达</a>
+    <a href="#jobs">精选机会</a>
+  </div>
+
+  <main id="main">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">AI talent intelligence</p>
+          <h1>找到真正匹配的人。<span>看见简历之外。</span></h1>
+          <p class="hero-lead">
+            拾光从代码、论文、产品和长期公开工作中理解人才，
+            将复杂的搜寻变成清晰、可信、可追溯的连接。
+          </p>
+          <div class="hero-actions">
+            <a class="button dark" href="#search">开始搜索人才 <span class="arrow">↗</span></a>
+            <a class="button ghost" href="#evidence">看看如何判断</a>
+          </div>
+          <div class="hero-proof">
+            <div class="avatar-stack" aria-hidden="true"><span>陈</span><span>林</span><span>周</span><span>许</span></div>
+            <span>已连接 500+ 公开信号源 · 结果可回溯到原始证据</span>
+          </div>
+        </div>
+
+        <div class="hero-product reveal" aria-label="人才匹配产品预览">
+          <div class="product-top">
+            <div class="product-name"><i class="live-dot"></i> 拾光 Search</div>
+            <span class="source-pill">500+ sources</span>
+          </div>
+          <article class="talent-preview">
+            <span class="preview-score">94%</span>
+            <div class="profile-head">
+              <span class="avatar">陈</span>
+              <div>
+                <h2>陈墨</h2>
+                <p>AI Infra · 分布式训练与推理优化</p>
+              </div>
+            </div>
+            <div class="skill-row">
+              <span>千卡训练</span><span>推理优化</span><span>KV Cache</span>
+            </div>
+            <div class="evidence-mini">
+              <div><span>工作证据</span><b>16 项已验证</b></div>
+              <div><span>近期信号</span><b>开源推理引擎 v2</b></div>
+              <div><span>团队适配</span><b>0→1 · 高复杂度系统</b></div>
+            </div>
+          </article>
+          <div class="product-footer">
+            <span>Research graph · 更新于 2 分钟前</span>
+            <span>● 网络在线</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="metrics" aria-label="产品指标">
+      <article class="metric"><strong>500+</strong><span>公开人才信号源</span></article>
+      <article class="metric"><strong>94%</strong><span>人才判断可追溯</span></article>
+      <article class="metric"><strong>6</strong><span>重点技术领域</span></article>
+      <article class="metric"><strong>7×24</strong><span>持续更新人才动态</span></article>
+    </section>
+
+    <section class="section" id="search">
+      <header class="section-head reveal">
+        <div>
+          <span class="section-kicker">01 / Precise search</span>
+          <h2>说出需求，拾光去理解人才。</h2>
+        </div>
+        <p>不再堆砌关键词。用一句真实的业务需求，搜索能力、经历、潜力与近期工作信号。</p>
+      </header>
+
+      <div class="search-lab reveal">
+        <div class="lab-bar">
+          <span class="lab-title"><i class="live-dot"></i> 人才研究工作台</span>
+          <div class="lab-meta"><span>索引已同步</span><span>演示数据</span></div>
+        </div>
+        <div class="search-panel">
+          <form class="search-compose" id="searchForm">
+            <textarea id="talentQuery" aria-label="描述你需要的人才" rows="2">寻找做过千卡训练、熟悉推理优化，近期仍有开源贡献的 AI Infra 负责人</textarea>
+            <button class="button blue" id="searchButton" type="submit">开始匹配 <span class="arrow">↗</span></button>
+          </form>
+          <div class="prompt-chips" aria-label="快速搜索条件">
+            <button class="prompt-chip" type="button" data-query="寻找做过多模态模型、有顶会论文和产品落地经验的人">多模态研究</button>
+            <button class="prompt-chip" type="button" data-query="寻找做过千卡训练、熟悉推理优化，近期仍有开源贡献的 AI Infra 负责人">AI Infra</button>
+            <button class="prompt-chip" type="button" data-query="寻找熟悉机器人控制、强化学习和真实场景部署的具身智能人才">具身智能</button>
+            <button class="prompt-chip" type="button" data-query="寻找做过自动驾驶规划控制、量产项目经验丰富的技术负责人">自动驾驶</button>
+            <button class="prompt-chip" type="button" data-query="寻找懂大模型应用、增长和复杂工作流设计的 AI 产品负责人">AI 产品</button>
+          </div>
+          <div class="search-state">
+            <div class="progress-track" aria-hidden="true"><i id="searchProgress"></i></div>
+            <span id="searchStatus" aria-live="polite">找到 6 位高相关人才</span>
+          </div>
+          <div class="results-head" aria-hidden="true">
+            <span>候选人才</span><span>核心能力</span><span>近期信号</span><span>匹配度</span><span></span>
+          </div>
+          <div class="candidate-list" id="candidateList"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="evidence-section" id="evidence">
+      <div class="evidence-wrap">
+        <header class="section-head reveal">
+          <div>
+            <span class="section-kicker">02 / Verified work</span>
+            <h2>不只看“他说过什么”，更看“他做成了什么”。</h2>
+          </div>
+          <p>将简历表述与公开工作证据并排核对，区分事实、推断与仍需面试验证的部分。</p>
+        </header>
+        <div class="evidence-grid">
+          <article class="story-card reveal">
+            <span class="section-kicker">Evidence first</span>
+            <h3>让人才判断回到作品本身。</h3>
+            <p>拾光把跨平台的零散信号整理为一条可阅读的能力轨迹，并明确每条结论来自哪里。</p>
+            <div class="quote">
+              “真正稀缺的，不是更多简历，而是更少噪音、更可信的判断。”
+              <small>拾光人才研究原则 · 01</small>
+            </div>
+          </article>
+          <article class="proof-card reveal">
+            <div class="proof-head"><b>能力验证 · 分布式训练</b><span class="verify-pill">✓ 交叉验证</span></div>
+            <div class="compare">
+              <article>
+                <div class="compare-label"><span>简历说</span><span>Claim</span></div>
+                <h4>“负责大规模模型训练平台。”</h4>
+                <p>职责范围宽泛，缺少规模、技术决策与实际结果。</p>
+              </article>
+              <article>
+                <div class="compare-label"><span>工作证明</span><span>Evidence</span></div>
+                <h4>连续 38 个月解决训练恢复与调度问题。</h4>
+                <p>代码提交、技术演讲与项目文档共同指向千卡训练、容错调度和推理效率。</p>
+              </article>
+            </div>
+            <div class="proof-sources"><span>GitHub · 1,284 commits</span><span>技术分享 · 7 场</span><span>论文 / 专利 · 11 项</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="outreach">
+      <header class="section-head reveal">
+        <div>
+          <span class="section-kicker">03 / Personal outreach</span>
+          <h2>每一次触达，都从理解对方开始。</h2>
+        </div>
+        <p>基于候选人的真实工作与岗位价值生成个性化信息。选择语气，即时预览并一键复制。</p>
+      </header>
+      <div class="outreach-grid">
+        <div class="outreach-control reveal">
+          <div class="field">
+            <label for="candidateSelect">选择人才</label>
+            <select id="candidateSelect"></select>
+          </div>
+          <div class="field">
+            <label>沟通语气</label>
+            <div class="tone-tabs" role="group" aria-label="沟通语气">
+              <button class="tone-tab active" type="button" data-tone="professional">专业</button>
+              <button class="tone-tab" type="button" data-tone="friendly">友好</button>
+              <button class="tone-tab" type="button" data-tone="concise">简洁</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="roleSelect">匹配职位</label>
+            <select id="roleSelect">
+              <option>AI Infra 技术负责人</option>
+              <option>多模态研究科学家</option>
+              <option>具身智能算法负责人</option>
+              <option>AI 产品负责人</option>
+            </select>
+          </div>
+          <button class="button dark" id="generateMessage" type="button">重新生成触达信息 <span class="arrow">↗</span></button>
+        </div>
+        <article class="message-card reveal">
+          <div class="message-head">
+            <div class="message-recipient">
+              <span class="avatar" id="messageAvatar">陈</span>
+              <div><b id="messageName">陈墨</b><span>个性化人才沟通</span></div>
+            </div>
+            <button class="copy-btn" id="copyMessage" type="button">复制信息</button>
+          </div>
+          <div class="message-body" id="messageBody"></div>
+          <div class="message-foot"><span>由拾光基于公开工作证据生成</span><span id="messageLength">0 字</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="jobs-section" id="jobs">
+      <div class="jobs-wrap">
+        <header class="section-head reveal">
+          <div>
+            <span class="section-kicker">04 / Curated roles</span>
+            <h2>值得投入下一段时间的机会。</h2>
+          </div>
+          <p>精选 AI 与前沿科技团队，只呈现业务阶段、技术问题和候选人最关心的核心信息。</p>
+        </header>
+        <div class="job-filters reveal" role="group" aria-label="职位筛选">
+          <button class="job-filter active" type="button" data-domain="全部">全部</button>
+          <button class="job-filter" type="button" data-domain="AI Infra">AI Infra</button>
+          <button class="job-filter" type="button" data-domain="多模态">多模态</button>
+          <button class="job-filter" type="button" data-domain="具身智能">具身智能</button>
+          <button class="job-filter" type="button" data-domain="AI 产品">AI 产品</button>
+        </div>
+        <div class="job-grid" id="jobGrid"></div>
+      </div>
+    </section>
+
+    <section class="section" id="workflow">
+      <header class="section-head reveal">
+        <div>
+          <span class="section-kicker">How it works</span>
+          <h2>从一句需求，到一次高质量连接。</h2>
+        </div>
+        <p>轻量但完整的招聘研究流：发现、验证、判断、触达，每一步都保留上下文。</p>
+      </header>
+      <div class="workflow-grid">
+        <article class="workflow-card reveal"><span class="workflow-number">01</span><h3>理解真实需求</h3><p>把业务目标转译为能力、经历、团队阶段与潜力信号。</p><small>Natural language brief</small></article>
+        <article class="workflow-card reveal"><span class="workflow-number">02</span><h3>搜索公开工作</h3><p>跨代码、论文、产品、演讲与长期表达建立人才图谱。</p><small>500+ public sources</small></article>
+        <article class="workflow-card reveal"><span class="workflow-number">03</span><h3>验证人才判断</h3><p>交叉核对关键结论，并标注事实、推断与待确认项。</p><small>Evidence traceable</small></article>
+        <article class="workflow-card reveal"><span class="workflow-number">04</span><h3>发起真诚连接</h3><p>从候选人的真实工作出发，生成有上下文的沟通。</p><small>Personal outreach</small></article>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <header class="section-head reveal">
+        <div>
+          <span class="section-kicker">Questions</span>
+          <h2>关于拾光。</h2>
+        </div>
+        <p>静态演示版在浏览器本地运行，不上传搜索内容；完整产品可接入你的招聘与人才数据库。</p>
+      </header>
+      <div class="faq-list">
+        <details class="reveal">
+          <summary>这个页面可以直接放到 GitHub Pages 吗？</summary>
+          <p>可以。它是一个不依赖构建工具的单文件页面，上传到仓库根目录后即可通过 GitHub Pages 发布。搜索、筛选、收藏、弹窗和触达生成都在浏览器中运行。</p>
+        </details>
+        <details class="reveal">
+          <summary>人才搜索结果来自真实候选人吗？</summary>
+          <p>当前公开页面使用虚构演示数据，用于展示产品交互与信息结构。正式部署时可以把候选人数据源替换为企业自己的 API 或数据库。</p>
+        </details>
+        <details class="reveal">
+          <summary>如何保证人才判断可信？</summary>
+          <p>每条重要判断都应关联到原始工作证据，并区分可验证事实、模型推断和仍需人工确认的内容。最终招聘决策始终由人完成。</p>
+        </details>
+        <details class="reveal">
+          <summary>能否继续使用项目里的 Next.js 后台？</summary>
+          <p>可以。根目录 index.html 是独立的 GitHub Pages 展示入口，原有 Next.js、申请流程、人才工作台与管理后台仍可部署到 Vercel。</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="final-cta reveal">
+      <span class="section-kicker">Start with a real question</span>
+      <h2>下一位关键人才，也许不在下一份简历里。</h2>
+      <a class="button" href="#search">开始搜索 <span class="arrow">↗</span></a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="#"><span class="brand-mark" aria-hidden="true"></span><span>拾光</span></a>
+        <p class="footer-note">让真正做过的事被看见，让真正适合的人来到真正需要他的团队。</p>
+      </div>
+      <div class="footer-col"><b>产品</b><a href="#search">人才搜索</a><a href="#evidence">能力证据</a><a href="#outreach">智能触达</a></div>
+      <div class="footer-col"><b>机会</b><a href="#jobs">精选职位</a><a href="#workflow">工作方式</a><a href="#faq">常见问题</a></div>
+      <div class="footer-col"><b>联系</b><a href="mailto:hello@shiguang.ai">hello@shiguang.ai</a><a href="#main">返回顶部</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 拾光 Shiguang. All rights reserved.</span><span>AI 辅助判断 · 人类最终决策</span></div>
+  </footer>
+
+  <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true">
+    <aside class="profile-drawer" id="profileDrawer" role="dialog" aria-modal="true" aria-labelledby="drawerName">
+      <button class="drawer-close" id="drawerClose" type="button" aria-label="关闭人才详情">×</button>
+      <div id="drawerContent"></div>
+    </aside>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const candidates = [
+        {
+          id: "chen-mo",
+          name: "陈墨",
+          initial: "陈",
+          title: "AI Infra · 分布式训练与推理优化",
+          domain: "AI Infra",
+          skills: ["千卡训练", "推理优化", "KV Cache"],
+          signal: "开源推理引擎 v2",
+          score: 94,
+          summary: "持续深耕大规模训练、容错调度与推理效率，既有底层系统经验，也做过从 0 到 1 的平台建设。",
+          evidence: [
+            ["训练恢复", "连续 38 个月围绕 checkpoint、弹性训练与故障恢复提交代码。"],
+            ["推理效率", "主导 KV Cache 与动态批处理优化，公开基准显示吞吐提升。"],
+            ["技术影响", "7 场技术分享与 11 项论文 / 专利形成交叉证据。"]
+          ]
+        },
+        {
+          id: "lin-xi",
+          name: "林溪",
+          initial: "林",
+          title: "多模态 · 视觉语言模型",
+          domain: "多模态",
+          skills: ["VLM", "对齐训练", "数据引擎"],
+          signal: "CVPR Oral",
+          score: 92,
+          summary: "研究与产品兼顾，擅长把多模态模型从论文指标推进到可用产品，近期持续关注高质量数据与评测。",
+          evidence: [
+            ["研究质量", "近三年发表 6 篇视觉语言方向论文，其中 1 篇 Oral。"],
+            ["产品落地", "参与构建面向创作者的多模态理解与生成产品。"],
+            ["团队协作", "公开演讲中系统复盘数据、模型和工程团队协作方式。"]
+          ]
+        },
+        {
+          id: "zhou-yan",
+          name: "周言",
+          initial: "周",
+          title: "具身智能 · 机器人学习",
+          domain: "具身智能",
+          skills: ["强化学习", "Sim2Real", "运动控制"],
+          signal: "真实场景部署",
+          score: 89,
+          summary: "从仿真训练到真实机器人部署经验完整，长期聚焦策略学习、运动控制与数据闭环。",
+          evidence: [
+            ["真实部署", "公开视频展示多种非结构化环境下的机器人任务完成能力。"],
+            ["算法深度", "开源复现覆盖强化学习、模仿学习与策略蒸馏。"],
+            ["工程闭环", "在技术文章中详细拆解仿真偏差与真实数据回流方案。"]
+          ]
+        },
+        {
+          id: "xu-ning",
+          name: "许宁",
+          initial: "许",
+          title: "自动驾驶 · 规划控制",
+          domain: "自动驾驶",
+          skills: ["规划控制", "量产", "端到端"],
+          signal: "量产车型上线",
+          score: 87,
+          summary: "具备从算法原型、系统验证到量产交付的完整链路经验，擅长复杂系统中的稳定性与安全权衡。",
+          evidence: [
+            ["量产经验", "参与两代车型规划控制系统交付并完成规模化道路验证。"],
+            ["系统判断", "专利与分享持续围绕安全边界、博弈决策和异常处理。"],
+            ["近期方向", "开始探索端到端模型与传统规划模块的混合架构。"]
+          ]
+        },
+        {
+          id: "luo-qing",
+          name: "罗晴",
+          initial: "罗",
+          title: "AI 产品 · 智能工作流",
+          domain: "AI 产品",
+          skills: ["Agent", "增长", "企业产品"],
+          signal: "新产品公测",
+          score: 86,
+          summary: "理解模型能力边界，也擅长从用户任务出发设计 AI 原生工作流，拥有企业产品与增长经验。",
+          evidence: [
+            ["产品能力", "从 0 到 1 推进两款 AI 工作流产品，覆盖需求、评测与商业化。"],
+            ["模型理解", "公开文章持续讨论 Agent 可靠性、上下文设计和人机协作。"],
+            ["增长结果", "负责的产品在半年内完成首批标杆客户与使用留存验证。"]
+          ]
+        },
+        {
+          id: "he-chuan",
+          name: "何川",
+          initial: "何",
+          title: "芯片架构 · AI 加速器",
+          domain: "芯片架构",
+          skills: ["NPU", "编译器", "软硬协同"],
+          signal: "新架构流片",
+          score: 84,
+          summary: "长期关注 AI 计算架构与编译栈，能够跨硬件、系统软件和模型负载做软硬件协同优化。",
+          evidence: [
+            ["架构经验", "参与两代 AI 加速器架构设计与性能建模。"],
+            ["软硬协同", "开源工具覆盖算子分析、图优化和硬件性能模拟。"],
+            ["行业影响", "多次在开发者大会分享新模型负载对计算架构的挑战。"]
+          ]
+        }
+      ];
+
+      const jobs = [
+        { domain: "AI Infra", company: "星河智能", stage: "B 轮", title: "AI Infra 技术负责人", detail: "构建下一代训练与推理平台，服务千亿参数模型和实时产品。", location: "北京 / 上海" },
+        { domain: "多模态", company: "无界实验室", stage: "A 轮", title: "多模态研究科学家", detail: "探索视觉、语言与行动统一建模，研究直接进入产品验证。", location: "上海 / Remote" },
+        { domain: "具身智能", company: "矩阵机器人", stage: "成长期", title: "具身智能算法负责人", detail: "负责真实场景中的数据闭环、策略学习和机器人泛化能力。", location: "深圳" },
+        { domain: "AI 产品", company: "折叠空间", stage: "Seed", title: "AI 产品负责人", detail: "从 0 到 1 定义企业智能工作流，连接模型能力与高价值任务。", location: "杭州 / Remote" },
+        { domain: "AI Infra", company: "光锥计算", stage: "C 轮", title: "推理引擎核心工程师", detail: "优化大模型在线服务的吞吐、延迟与异构硬件效率。", location: "北京" },
+        { domain: "多模态", company: "涌现科技", stage: "B 轮", title: "数据引擎负责人", detail: "构建多模态数据生产、质量评估与持续迭代系统。", location: "上海" }
+      ];
+
+      const candidateList = document.querySelector("#candidateList");
+      const queryInput = document.querySelector("#talentQuery");
+      const searchStatus = document.querySelector("#searchStatus");
+      const searchButton = document.querySelector("#searchButton");
+      const searchProgress = document.querySelector("#searchProgress");
+      const drawerBackdrop = document.querySelector("#drawerBackdrop");
+      const drawerContent = document.querySelector("#drawerContent");
+      const shortlistCount = document.querySelector("#shortlistCount");
+      const candidateSelect = document.querySelector("#candidateSelect");
+      const messageBody = document.querySelector("#messageBody");
+      const messageName = document.querySelector("#messageName");
+      const messageAvatar = document.querySelector("#messageAvatar");
+      const messageLength = document.querySelector("#messageLength");
+      const toast = document.querySelector("#toast");
+      let activeTone = "professional";
+      let activeCandidates = [...candidates];
+      let shortlist = [];
+
+      try {
+        shortlist = JSON.parse(localStorage.getItem("shiguang-shortlist") || "[]");
+        if (!Array.isArray(shortlist)) shortlist = [];
+      } catch (_) {
+        shortlist = [];
+      }
+
+      const escapeHTML = (value) => String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+      const showToast = (message) => {
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(showToast.timer);
+        showToast.timer = setTimeout(() => toast.classList.remove("show"), 2200);
+      };
+
+      const syncShortlist = () => {
+        shortlistCount.textContent = shortlist.length;
+        try { localStorage.setItem("shiguang-shortlist", JSON.stringify(shortlist)); } catch (_) {}
+      };
+
+      const renderCandidates = (items) => {
+        activeCandidates = items;
+        if (!items.length) {
+          candidateList.innerHTML = '<div class="empty-state"><div><b>暂未找到完全匹配的人才</b><span>尝试减少条件，或换一种方式描述需求。</span></div></div>';
+          return;
+        }
+        candidateList.innerHTML = items.map((candidate) => `
+          <button class="candidate-row" type="button" data-candidate="${escapeHTML(candidate.id)}" aria-label="查看 ${escapeHTML(candidate.name)} 的人才详情">
+            <span class="candidate-name">
+              <span class="avatar">${escapeHTML(candidate.initial)}</span>
+              <span><b>${escapeHTML(candidate.name)}</b><small>${escapeHTML(candidate.title)}</small></span>
+            </span>
+            <span class="candidate-skills">${candidate.skills.map((skill) => `<span>${escapeHTML(skill)}</span>`).join("")}</span>
+            <span class="signal">${escapeHTML(candidate.signal)}</span>
+            <span class="match">${candidate.score}%</span>
+            <span class="row-arrow">↗</span>
+          </button>
+        `).join("");
+      };
+
+      const searchableText = (candidate) =>
+        [candidate.domain, candidate.title, candidate.skills.join(" "), candidate.signal, candidate.summary].join(" ").toLowerCase();
+
+      const searchCandidates = (query) => {
+        const normalized = query.trim().toLowerCase();
+        const keywordGroups = [
+          ["infra", "训练", "推理", "千卡", "cache", "分布式"],
+          ["多模态", "vlm", "视觉", "论文", "模型"],
+          ["具身", "机器人", "强化学习", "控制", "sim2real"],
+          ["自动驾驶", "规划", "量产", "端到端"],
+          ["产品", "agent", "增长", "工作流"],
+          ["芯片", "npu", "架构", "编译器"]
+        ];
+        const matchedKeywords = keywordGroups.flat().filter((keyword) => normalized.includes(keyword));
+        if (!normalized) return [...candidates];
+        if (!matchedKeywords.length) {
+          const direct = candidates.filter((candidate) => searchableText(candidate).includes(normalized));
+          return direct.length ? direct : [...candidates];
+        }
+        return [...candidates]
+          .map((candidate) => ({
+            candidate,
+            points: matchedKeywords.reduce((sum, keyword) => sum + (searchableText(candidate).includes(keyword) ? 1 : 0), 0)
+          }))
+          .filter((entry) => entry.points > 0)
+          .sort((a, b) => b.points - a.points || b.candidate.score - a.candidate.score)
+          .map((entry, index) => ({ ...entry.candidate, score: Math.max(78, entry.candidate.score - index) }));
+      };
+
+      const runSearch = () => {
+        const query = queryInput.value;
+        searchButton.disabled = true;
+        searchButton.textContent = "正在理解需求…";
+        searchProgress.style.setProperty("--match-progress", "18%");
+        searchStatus.textContent = "正在解析能力、经历与近期信号";
+        window.setTimeout(() => {
+          searchProgress.style.setProperty("--match-progress", "68%");
+          searchStatus.textContent = "正在交叉验证公开工作证据";
+        }, 360);
+        window.setTimeout(() => {
+          const results = searchCandidates(query);
+          renderCandidates(results);
+          searchProgress.style.setProperty("--match-progress", "100%");
+          searchStatus.textContent = results.length ? `找到 ${results.length} 位高相关人才` : "没有完全匹配的结果";
+          searchButton.disabled = false;
+          searchButton.innerHTML = '再次匹配 <span class="arrow">↗</span>';
+        }, 900);
+      };
+
+      const getCandidate = (id) => candidates.find((candidate) => candidate.id === id);
+
+      const openDrawer = (candidate) => {
+        const isSaved = shortlist.includes(candidate.id);
+        drawerContent.innerHTML = `
+          <div class="drawer-profile">
+            <span class="avatar">${escapeHTML(candidate.initial)}</span>
+            <h2 id="drawerName">${escapeHTML(candidate.name)}</h2>
+            <p>${escapeHTML(candidate.title)}</p>
+            <div class="skill-row">${candidate.skills.map((skill) => `<span>${escapeHTML(skill)}</span>`).join("")}</div>
+            <div class="drawer-score"><span>当前需求匹配度</span><b>${candidate.score}%</b></div>
+            <div class="drawer-block">
+              <h3>人才判断</h3>
+              <p>${escapeHTML(candidate.summary)}</p>
+            </div>
+            <div class="drawer-block">
+              <h3>关键工作证据</h3>
+              <div class="evidence-list">${candidate.evidence.map(([title, text]) => `<div><b>${escapeHTML(title)}</b><span>${escapeHTML(text)}</span></div>`).join("")}</div>
+            </div>
+            <div class="drawer-actions">
+              <button class="button ${isSaved ? "ghost" : "dark"} small" id="saveCandidate" type="button">${isSaved ? "已加入清单" : "加入候选清单"}</button>
+              <button class="button ghost small" id="contactCandidate" type="button">生成触达信息</button>
+            </div>
+          </div>
+        `;
+        drawerBackdrop.classList.add("open");
+        drawerBackdrop.setAttribute("aria-hidden", "false");
+        document.body.classList.add("drawer-open");
+        document.querySelector("#drawerClose").focus();
+        document.querySelector("#saveCandidate").addEventListener("click", () => toggleShortlist(candidate.id));
+        document.querySelector("#contactCandidate").addEventListener("click", () => {
+          candidateSelect.value = candidate.id;
+          generateMessage();
+          closeDrawer();
+          document.querySelector("#outreach").scrollIntoView({ behavior: "smooth" });
+        });
+      };
+
+      const closeDrawer = () => {
+        drawerBackdrop.classList.remove("open");
+        drawerBackdrop.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("drawer-open");
+      };
+
+      const toggleShortlist = (id) => {
+        if (shortlist.includes(id)) {
+          shortlist = shortlist.filter((item) => item !== id);
+          showToast("已从候选清单移除");
+        } else {
+          shortlist.push(id);
+          showToast("已加入候选清单");
+        }
+        syncShortlist();
+        const candidate = getCandidate(id);
+        if (candidate) openDrawer(candidate);
+      };
+
+      const toneCopy = {
+        professional: (candidate, role) =>
+          `${candidate.name}，你好：\n\n我留意到你在${candidate.skills[0]}和${candidate.skills[1]}方向的持续工作，尤其是“${candidate.signal}”这项近期进展。我们正在协助一个处于关键增长阶段的团队寻找${role}，他们面对的问题与你过去积累的经验有很强关联。\n\n如果你愿意，我希望用 20 分钟介绍团队正在解决的技术问题，也听听你对下一阶段工作的判断。`,
+        friendly: (candidate, role) =>
+          `${candidate.name}，你好！\n\n最近读到你关于${candidate.skills[0]}的工作，也看了“${candidate.signal}”这项更新，很喜欢你把复杂问题做实的方式。我们正在为一支很有意思的团队寻找${role}，感觉你们关注的问题会有不少交集。\n\n如果你最近愿意认识新团队，很想约个轻松的时间聊聊，不急着谈职位，先交换一下对行业和技术的判断。`,
+        concise: (candidate, role) =>
+          `${candidate.name}，你好。\n\n看到你在${candidate.skills.slice(0, 2).join("、")}上的持续工作。我们正在寻找${role}，核心问题与你的“${candidate.signal}”经历高度相关。\n\n方便用 20 分钟了解一下团队和问题吗？`
+      };
+
+      const generateMessage = () => {
+        const candidate = getCandidate(candidateSelect.value) || candidates[0];
+        const role = document.querySelector("#roleSelect").value;
+        const copy = toneCopy[activeTone](candidate, role);
+        messageName.textContent = candidate.name;
+        messageAvatar.textContent = candidate.initial;
+        messageBody.textContent = copy;
+        messageLength.textContent = `${copy.replace(/\s/g, "").length} 字`;
+      };
+
+      const renderJobs = (domain = "全部") => {
+        const filtered = domain === "全部" ? jobs : jobs.filter((job) => job.domain === domain);
+        document.querySelector("#jobGrid").innerHTML = filtered.map((job, index) => `
+          <article class="job-card">
+            <div class="job-top"><span>${String(index + 1).padStart(2, "0")} · ${escapeHTML(job.company)}</span><span>${escapeHTML(job.stage)}</span></div>
+            <h3>${escapeHTML(job.title)}</h3>
+            <p>${escapeHTML(job.detail)}</p>
+            <div class="job-bottom"><div><b>${escapeHTML(job.location)}</b><p>${escapeHTML(job.domain)}</p></div><button class="job-open" type="button" data-job="${escapeHTML(job.title)}" aria-label="查看 ${escapeHTML(job.title)}">↗</button></div>
+          </article>
+        `).join("");
+      };
+
+      document.querySelector("#searchForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+        runSearch();
+      });
+
+      document.querySelectorAll(".prompt-chip").forEach((button) => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".prompt-chip").forEach((item) => item.setAttribute("aria-pressed", "false"));
+          button.setAttribute("aria-pressed", "true");
+          queryInput.value = button.dataset.query;
+          runSearch();
+        });
+      });
+
+      candidateList.addEventListener("click", (event) => {
+        const row = event.target.closest("[data-candidate]");
+        if (!row) return;
+        const candidate = getCandidate(row.dataset.candidate);
+        if (candidate) openDrawer(candidate);
+      });
+
+      document.querySelector("#drawerClose").addEventListener("click", closeDrawer);
+      drawerBackdrop.addEventListener("click", (event) => {
+        if (event.target === drawerBackdrop) closeDrawer();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeDrawer();
+      });
+
+      candidates.forEach((candidate) => {
+        const option = document.createElement("option");
+        option.value = candidate.id;
+        option.textContent = `${candidate.name} · ${candidate.domain}`;
+        candidateSelect.append(option);
+      });
+      candidateSelect.addEventListener("change", generateMessage);
+      document.querySelector("#roleSelect").addEventListener("change", generateMessage);
+      document.querySelector("#generateMessage").addEventListener("click", () => {
+        generateMessage();
+        showToast("触达信息已重新生成");
+      });
+      document.querySelectorAll(".tone-tab").forEach((button) => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".tone-tab").forEach((item) => item.classList.remove("active"));
+          button.classList.add("active");
+          activeTone = button.dataset.tone;
+          generateMessage();
+        });
+      });
+      document.querySelector("#copyMessage").addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(messageBody.textContent);
+          showToast("触达信息已复制");
+        } catch (_) {
+          showToast("复制失败，请手动选择文本");
+        }
+      });
+
+      document.querySelectorAll(".job-filter").forEach((button) => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".job-filter").forEach((item) => item.classList.remove("active"));
+          button.classList.add("active");
+          renderJobs(button.dataset.domain);
+        });
+      });
+      document.querySelector("#jobGrid").addEventListener("click", (event) => {
+        const button = event.target.closest("[data-job]");
+        if (button) showToast(`${button.dataset.job} · 职位详情演示`);
+      });
+
+      document.querySelector("#shortlistButton").addEventListener("click", () => {
+        if (!shortlist.length) {
+          showToast("候选清单还是空的，先选择一位人才");
+          document.querySelector("#search").scrollIntoView({ behavior: "smooth" });
+          return;
+        }
+        const saved = candidates.filter((candidate) => shortlist.includes(candidate.id));
+        renderCandidates(saved);
+        searchStatus.textContent = `候选清单中有 ${saved.length} 位人才`;
+        document.querySelector("#search").scrollIntoView({ behavior: "smooth" });
+      });
+
+      const menuButton = document.querySelector("#menuButton");
+      const mobileMenu = document.querySelector("#mobileMenu");
+      const toggleMenu = () => {
+        const open = mobileMenu.classList.toggle("open");
+        menuButton.setAttribute("aria-expanded", String(open));
+        menuButton.setAttribute("aria-label", open ? "关闭菜单" : "打开菜单");
+        document.body.classList.toggle("menu-open", open);
+      };
+      menuButton.addEventListener("click", toggleMenu);
+      mobileMenu.querySelectorAll("a").forEach((link) => link.addEventListener("click", toggleMenu));
+
+      const revealObserver = "IntersectionObserver" in window
+        ? new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                revealObserver.unobserve(entry.target);
+              }
+            });
+          }, { threshold: .08 })
+        : null;
+      document.querySelectorAll(".reveal").forEach((element) => {
+        if (revealObserver) revealObserver.observe(element);
+        else element.classList.add("visible");
+      });
+
+      const syncScroll = () => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = max > 0 ? (window.scrollY / max) * 100 : 0;
+        document.documentElement.style.setProperty("--scroll", `${progress}%`);
+      };
+      window.addEventListener("scroll", syncScroll, { passive: true });
+
+      renderCandidates(candidates);
+      renderJobs();
+      generateMessage();
+      syncShortlist();
+      syncScroll();
+    })();
+  </script>
+</body>
+</html>
