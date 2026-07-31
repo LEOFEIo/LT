@@ -40,28 +40,27 @@ export default async function SignInPage({
           <span className="ui-eyebrow">SECURE WORKSPACE</span>
           <h1>进入你的<br />人才工作台。</h1>
           <p>
-            候选人可查看申请进度；管理员使用配置的邮箱与密码进入顾问后台。
+            候选人可查看申请进度；管理员使用用户名与密码进入招聘方后台。
           </p>
         </div>
 
         <form action="/api/auth/signin" method="post" className="signin-form">
           <input type="hidden" name="returnTo" value={returnTo} />
           <label>
-            <span>姓名</span>
+            <span>姓名 <small>候选人必填</small></span>
             <input
               autoComplete="name"
               name="displayName"
               placeholder="你的姓名"
-              required
             />
           </label>
           <label>
-            <span>邮箱</span>
+            <span>用户名或邮箱</span>
             <input
-              autoComplete="email"
+              autoComplete="username"
               name="email"
-              placeholder="name@example.com"
-              type="email"
+              placeholder="候选人邮箱 / 管理员用户名"
+              type="text"
               required
             />
           </label>
@@ -85,7 +84,7 @@ export default async function SignInPage({
         </form>
 
         <p className="signin-note">
-          登录即表示你同意仅将提交信息用于职位匹配。
+          演示管理员：用户名 admin。生产部署请通过环境变量更换账号和密码。
         </p>
       </section>
       <aside className="signin-visual" aria-hidden="true">

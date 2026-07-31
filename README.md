@@ -1,51 +1,76 @@
 # 拾光 Shiguang Recruiting
 
-一套面向 AI 与科技人才招聘的全栈网站，采用 Meta 风格的明亮产品视觉系统。
+一套可直接上传 GitHub 的 AI 人才招聘网站，融合 Tezign 式品牌叙事、DINQ 式人才智能工作流与 Meta 式产品界面。所有页面、品牌、图标、文案和演示数据均为原创。
 
-项目包含：
+## 这个版本包含
 
-- 可直接用于 GitHub Pages 的根目录 `index.html`
-- AI 人才自然语言搜索
-- 精选职位列表与职位详情
-- 候选人申请与个人档案
-- 招聘顾问工作台与管理后台
-- Neon PostgreSQL 可选数据持久化
-- Vercel 一键部署配置
-- GitHub Actions 自动构建检查
+- Tezign 风格黑色编辑式首页、超大标题、聚光渐变与模块化产品卡
+- DINQ 式自然语言人才搜索、履历证据、候选清单与个性化触达
+- JD 智能解析、能力标签、招聘难点与候选人推荐
+- 双候选人能力对比与结构化面试问题生成
+- 招聘 Copilot、`⌘K` 快捷命令与原创 SVG 图标系统
+- GitHub Pages 静态候选人中心和招聘方后台
+- Next.js 候选人端、招聘方驾驶舱和完整管理控制台
+- 精选职位、申请流程、个人档案、CSV 导出与可选 Neon 数据库
 
-## 上传到 GitHub
+## 目录入口
+
+| 页面 | GitHub Pages 静态版 | Next.js / Vercel |
+| --- | --- | --- |
+| 品牌首页 | `index.html` | `/` |
+| 登录 | `login.html` | `/signin` |
+| 候选人中心 | `candidate.html` | `/candidate` |
+| 招聘方后台 | `recruiter.html` | `/recruiter` |
+| 完整管理台 | 静态招聘方后台内演示 | `/admin` |
+
+## 静态演示账号
+
+- 管理员用户名：`admin`
+- 管理员密码：`fy147852`
+
+> 重要：GitHub Pages 是纯前端网站，静态账号与密码必然能在源代码中看到，只能用于产品演示，不能保护真实候选人数据。正式上线请部署 Next.js 版本，通过环境变量更换账号密码，并连接数据库和企业身份认证。
+
+候选人无需密码，在登录页填写姓名和邮箱即可进入。静态版的档案、招聘阶段和新增人才只保存在当前浏览器的 `localStorage` 中。
+
+## 直接上传 GitHub
 
 1. 解压下载的 ZIP。
-2. 在 GitHub 新建一个空仓库，不要预先添加 README 或 `.gitignore`。
+2. 在 GitHub 新建空仓库，不要预先添加 README 或 `.gitignore`。
 3. 点击 **Add file → Upload files**。
-4. 把 `Shiguang-Recruiting-GitHub` 文件夹里面的全部内容拖入上传区域。
-5. 提交后即可在仓库中看到 `app`、`public`、`package.json` 等文件。
+4. 将 `Shiguang-Recruiting-GitHub` 文件夹内的全部内容拖入上传区域。
+5. 提交到 `main` 分支。
 
 也可以使用 Git：
 
 ```bash
 git init
 git add .
-git commit -m "Initial Shiguang Recruiting site"
+git commit -m "Launch Shiguang Recruiting"
 git branch -M main
 git remote add origin https://github.com/你的用户名/你的仓库名.git
 git push -u origin main
 ```
 
-## 部署到 GitHub Pages
+## 部署 GitHub Pages
 
-根目录的 [`index.html`](./index.html) 是完整的单文件静态站点，不需要安装依赖或执行构建：
+1. 打开仓库的 **Settings → Pages**。
+2. 在 **Build and deployment** 中选择 **Deploy from a branch**。
+3. 分支选择 `main`，目录选择 `/ (root)`。
+4. 保存后访问 GitHub 提供的 Pages 地址。
 
-1. 把项目内容上传到 GitHub 仓库的 `main` 分支。
-2. 打开仓库的 **Settings → Pages**。
-3. 在 **Build and deployment** 中选择 **Deploy from a branch**。
-4. 分支选择 `main`，目录选择 `/ (root)`，然后保存。
+根目录 `index.html`、`login.html`、`candidate.html` 和 `recruiter.html` 都是无依赖静态页面。首页可直接搜索人才、解析 JD、比较候选人、生成面试题与触达文案；登录后可演示双端后台。
 
-GitHub Pages 会直接发布 `index.html`。该静态版包含人才自然语言筛选、候选人详情、浏览器本地收藏、个性化触达文案、职位筛选、移动菜单和 FAQ 等交互。
+## 本地预览静态版
 
-> `index.html` 与 Next.js 应用相互独立：GitHub Pages 用于静态展示，Vercel 用于完整的申请流程、工作台、API 和管理后台。
+可以直接打开 `index.html`，或使用本地服务器：
 
-## 本地运行
+```bash
+python3 -m http.server 8080
+```
+
+然后访问 `http://localhost:8080`。
+
+## 运行完整 Next.js 版
 
 要求 Node.js 22.13 或更高版本。
 
@@ -55,43 +80,33 @@ cp .env.example .env.local
 npm run dev
 ```
 
-打开 `http://localhost:3000`。
-
-不配置数据库也能运行，网站会自动使用内置演示职位和人才数据。
-
-如果只想预览 GitHub Pages 静态版，可以直接双击 `index.html`，或运行：
-
-```bash
-python3 -m http.server 8080
-```
-
-然后打开 `http://localhost:8080`。
+打开 `http://localhost:3000`。不配置数据库时，品牌首页、职位、候选人中心和招聘方后台会使用内置演示数据；连接数据库后，申请、档案和后台操作可持久化。
 
 ## 环境变量
-
-复制 `.env.example` 为 `.env.local`：
 
 ```env
 DATABASE_URL=
 AUTH_SECRET=
-ADMIN_EMAIL=
-ADMIN_PASSWORD=
+ADMIN_USERNAME=admin
+ADMIN_EMAIL=admin@shiguang.local
+ADMIN_PASSWORD=fy147852
 ```
 
 - `DATABASE_URL`：可选，推荐使用 Neon PostgreSQL。
 - `AUTH_SECRET`：生产环境必须设置为随机长字符串。
-- `ADMIN_EMAIL`：管理后台账号邮箱。
-- `ADMIN_PASSWORD`：管理后台密码。
+- `ADMIN_USERNAME`：管理员登录用户名。
+- `ADMIN_EMAIL`：管理员会话邮箱标识。
+- `ADMIN_PASSWORD`：管理员密码，生产部署必须更换。
 
-## 部署到 Vercel
+## 部署 Vercel
 
-1. 在 Vercel 选择 **Add New → Project**。
-2. 导入刚上传的 GitHub 仓库。
-3. Framework Preset 选择 **Next.js**，其余构建配置保持默认。
-4. 如果需要真实数据和管理后台，在 Environment Variables 中填写上述变量。
+1. 在 Vercel 选择 **Add New → Project** 并导入仓库。
+2. Framework Preset 选择 **Next.js**。
+3. 在 Environment Variables 中设置 `AUTH_SECRET` 和新的管理员凭据。
+4. 如需真实申请和档案数据，再配置 `DATABASE_URL`。
 5. 点击 **Deploy**。
 
-项目自带 `vercel.json`，Vercel 会执行数据库初始化脚本和 Next.js 生产构建。未配置 `DATABASE_URL` 时，初始化脚本会安全跳过。
+项目自带 `vercel.json`。没有 `DATABASE_URL` 时，数据库初始化会安全跳过。
 
 ## 常用命令
 
@@ -106,15 +121,9 @@ npm run db:setup   # 初始化数据库
 
 ## 技术栈
 
-- Next.js 16
-- React 19
-- TypeScript
-- Tailwind CSS
-- Drizzle ORM
-- Neon PostgreSQL
+- Next.js 16、React 19、TypeScript
+- Drizzle ORM、Neon PostgreSQL
+- 原生 HTML、CSS、JavaScript 静态门户
+- 原创内联 SVG 图标
 
-设计规则保存在 [`DESIGN.md`](./DESIGN.md)。
-
-## 设计说明
-
-网站以 Meta 设计系统为主要视觉语言：白色画布、黑色营销 CTA、圆角胶囊按钮、32px 大卡片和轻量边框。人才搜索、证据核验与个性化触达的信息结构参考现代人才智能产品，但所有品牌、文案、候选人和职位数据均为“拾光”原创演示内容。
+完整设计令牌、组件规则与响应式约束见 [`DESIGN.md`](./DESIGN.md)。

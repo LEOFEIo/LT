@@ -7,8 +7,15 @@ export function ProductHeader({
   active,
 }: {
   user?: ChatGPTUser | null;
-  active?: "product" | "jobs" | "workspace" | "admin";
+  active?: "product" | "jobs" | "workspace" | "candidate" | "recruiter" | "admin";
 }) {
+  const signInReturnTo =
+    active === "recruiter" || active === "admin"
+      ? "/recruiter"
+      : active === "candidate" || active === "workspace"
+        ? "/candidate"
+        : "/workspace";
+
   return (
     <header className="product-header">
       <Link className="wordmark" href="/">
@@ -29,13 +36,16 @@ export function ProductHeader({
           开放机会
         </Link>
         <Link
-          className={active === "workspace" ? "active" : ""}
-          href="/workspace"
+          className={["workspace", "candidate"].includes(active ?? "") ? "active" : ""}
+          href="/candidate"
         >
-          工作台
+          候选人端
         </Link>
-        <Link className={active === "admin" ? "active" : ""} href="/admin">
-          顾问后台
+        <Link
+          className={["recruiter", "admin"].includes(active ?? "") ? "active" : ""}
+          href="/recruiter"
+        >
+          招聘方后台
         </Link>
       </nav>
       <div className="product-account">
@@ -53,7 +63,7 @@ export function ProductHeader({
           <>
             <a
               className="header-text-action"
-              href={chatGPTSignInPath("/workspace")}
+              href={chatGPTSignInPath(signInReturnTo)}
             >
               登录
             </a>
@@ -68,8 +78,8 @@ export function ProductHeader({
         <nav aria-label="移动端产品导航">
           <Link href="/#thinking">产品</Link>
           <Link href="/jobs">开放机会</Link>
-          <Link href="/workspace">工作台</Link>
-          <Link href="/admin">顾问后台</Link>
+          <Link href="/candidate">候选人端</Link>
+          <Link href="/recruiter">招聘方后台</Link>
         </nav>
       </details>
     </header>

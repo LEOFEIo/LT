@@ -66,7 +66,7 @@ export default async function Home() {
   return (
     <main className="product-page landing-page">
       <div className="meta-promo">
-        <span>拾光人才智能现已开放体验</span>
+        <span>Recruiting intelligence, in action · 拾光人才智能</span>
         <Link href="/jobs">查看精选机会 →</Link>
       </div>
       <ProductHeader user={user} active="product" />
@@ -75,12 +75,12 @@ export default async function Home() {
         <div className="hero-copy">
           <p className="section-kicker">AI 人才智能 · TALENT INTELLIGENCE</p>
           <h1>
-            让真正适合的人，
-            <span>来到真正需要他的团队。</span>
+            从理解，到连接，
+            <span>到结果。</span>
           </h1>
           <p>
-            拾光从代码、论文、产品和长期公开轨迹中理解人才，把复杂的搜寻，
-            变成清晰、可信、可追溯的连接。
+            像研究一个市场一样研究人才。拾光主动理解需求、搜索公开工作、
+            验证能力证据，并推动每一次关键招聘抵达结果。
           </p>
           <div className="hero-actions">
             <a className="primary-button" href="#search">
@@ -132,6 +132,19 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      <div className="tezign-ticker" aria-label="拾光人才智能能力">
+        <div>
+          <span>Natural-language search ✦</span>
+          <span>Evidence verification ✦</span>
+          <span>Talent graph ✦</span>
+          <span>Personal outreach ✦</span>
+          <span>Natural-language search ✦</span>
+          <span>Evidence verification ✦</span>
+          <span>Talent graph ✦</span>
+          <span>Personal outreach ✦</span>
+        </div>
+      </div>
 
       <section className="showcase-section" id="search">
         <header className="meta-section-intro">

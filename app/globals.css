@@ -1702,6 +1702,1188 @@ select {
   }
 }
 
+/* Shiguang V2 — Tezign editorial atmosphere + DINQ recruiting workflow */
+.landing-page {
+  color: #151515;
+  background: #f3f1eb;
+}
+
+.landing-page .meta-promo {
+  min-height: 36px;
+  color: #070707;
+  background: #c7ff4a;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.landing-page .meta-promo a {
+  color: #070707;
+}
+
+.landing-page > .product-header {
+  color: #ffffff;
+  background: rgba(7, 7, 7, 0.92);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.landing-page .product-header .wordmark,
+.landing-page .product-header .wordmark > span,
+.landing-page .header-text-action {
+  color: #ffffff;
+}
+
+.landing-page .product-header .wordmark i {
+  color: #070707;
+  background: #c7ff4a;
+}
+
+.landing-page .product-header .wordmark small,
+.landing-page .product-account {
+  color: #929292;
+}
+
+.landing-page .product-nav {
+  background: #1b1b1b;
+}
+
+.landing-page .product-nav a {
+  color: #969696;
+}
+
+.landing-page .product-nav a:hover,
+.landing-page .product-nav a.active {
+  color: #070707;
+  background: #ffffff;
+}
+
+.landing-page .header-primary-action {
+  color: #070707;
+  background: #ffffff;
+}
+
+.landing-page .landing-hero {
+  position: relative;
+  min-height: 780px;
+  padding: 88px max(32px, calc((100vw - 1280px) / 2));
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 75% 13%, rgba(110, 72, 255, 0.48), transparent 29%),
+    radial-gradient(circle at 91% 82%, rgba(255, 73, 161, 0.22), transparent 31%),
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    #070707;
+  background-size: auto, auto, 72px 72px, 72px 72px, auto;
+  border: 0;
+}
+
+.landing-page .landing-hero .section-kicker,
+.landing-page .landing-hero .hero-copy > p:last-of-type {
+  color: #a2a2a2;
+}
+
+.landing-page .landing-hero h1 {
+  max-width: 760px;
+  color: #ffffff;
+  font-size: clamp(68px, 7vw, 108px);
+  line-height: 0.91;
+  letter-spacing: -0.072em;
+}
+
+.landing-page .landing-hero h1 span {
+  color: #8f8f8f;
+}
+
+.landing-page .landing-hero .primary-button {
+  color: #070707;
+  background: #ffffff;
+  border-color: #ffffff;
+}
+
+.landing-page .landing-hero .secondary-button {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.38);
+}
+
+.landing-page .meta-hero-visual {
+  min-height: 575px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 84% 12%, rgba(199, 255, 74, 0.68), transparent 24%),
+    radial-gradient(circle at 8% 88%, rgba(126, 84, 255, 0.92), transparent 38%),
+    linear-gradient(145deg, #342b61, #171321 58%, #090909);
+}
+
+.landing-page .talent-orbit > i {
+  border-color: rgba(255, 255, 255, 0.19);
+}
+
+.landing-page .talent-orbit > i:nth-child(2) {
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.landing-page .talent-orbit > i:nth-child(3) {
+  background: #c7ff4a;
+}
+
+.landing-page .featured-talent-card {
+  border: 0;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
+  transform: rotate(-1.4deg);
+}
+
+.landing-page .featured-talent-card header b {
+  color: #070707;
+  background: #c7ff4a;
+}
+
+.landing-page .signal-ribbon {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(7, 7, 7, 0.44);
+}
+
+.landing-page .signal-ribbon b {
+  color: #b4b4b4;
+}
+
+.tezign-ticker {
+  overflow: hidden;
+  color: #070707;
+  border-bottom: 1px solid #070707;
+  background: #c7ff4a;
+}
+
+.tezign-ticker > div {
+  display: flex;
+  width: max-content;
+  animation: tezign-ticker 24s linear infinite;
+}
+
+.tezign-ticker span {
+  padding: 17px 28px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@keyframes tezign-ticker {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.landing-page .showcase-section {
+  padding: 110px max(32px, calc((100vw - 1280px) / 2)) 0;
+}
+
+.landing-page .meta-section-intro {
+  max-width: 1280px;
+}
+
+.landing-page .meta-section-intro h2,
+.landing-page .landing-heading h2 {
+  font-size: clamp(50px, 5vw, 72px);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.landing-page .showcase-frame {
+  border-color: #1f1f1f;
+  border-radius: 24px;
+}
+
+.landing-page .showcase-chrome {
+  color: #ffffff;
+  background: #111111;
+  border-color: #2c2c2c;
+}
+
+.landing-page .showcase-title b {
+  color: #ffffff;
+}
+
+.landing-page .brand-pulse {
+  background: #c7ff4a;
+  box-shadow: 0 0 0 5px rgba(199, 255, 74, 0.13);
+}
+
+.landing-page .showcase-sidebar {
+  color: #b3b3b3;
+  background: #191919;
+  border-color: #2c2c2c;
+}
+
+.landing-page .showcase-sidebar b.active {
+  color: #070707;
+  background: #c7ff4a;
+}
+
+.landing-page .prompt-input-row button {
+  color: #070707;
+  background: #c7ff4a;
+}
+
+.landing-page .metric-strip {
+  gap: 12px;
+  margin: 24px max(32px, calc((100vw - 1280px) / 2)) 0;
+}
+
+.landing-page .metric-strip article {
+  color: #ffffff;
+  background: #151515;
+  border-radius: 20px;
+}
+
+.landing-page .metric-strip article:nth-child(2) {
+  color: #070707;
+  background: #c7ff4a;
+}
+
+.landing-page .metric-strip article:nth-child(3) {
+  color: #ffffff;
+  background: #6e48ff;
+}
+
+.landing-page .metric-strip article:nth-child(2) strong,
+.landing-page .metric-strip article:nth-child(2) span {
+  color: #070707;
+}
+
+.landing-page .metric-strip article:nth-child(3) strong,
+.landing-page .metric-strip article:nth-child(3) span,
+.landing-page .metric-strip article:not(:nth-child(2)):not(:nth-child(3)) strong {
+  color: #ffffff;
+}
+
+.landing-page .metric-strip article:not(:nth-child(2)):not(:nth-child(3)) span {
+  color: #999999;
+}
+
+.landing-page .landing-section {
+  padding: 112px max(32px, calc((100vw - 1280px) / 2)) 0;
+}
+
+.landing-page #thinking {
+  margin-top: 112px;
+  padding-top: 96px;
+  padding-bottom: 96px;
+  color: #ffffff;
+  background: #6e48ff;
+}
+
+.landing-page #thinking .landing-heading h2,
+.landing-page #thinking .section-kicker {
+  color: #ffffff;
+}
+
+.landing-page #thinking .landing-heading > p {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.landing-page #tasks {
+  padding-top: 104px;
+  padding-bottom: 104px;
+  color: #ffffff;
+  background: #070707;
+}
+
+.landing-page #tasks .landing-heading h2 {
+  color: #ffffff;
+}
+
+.landing-page #tasks .landing-heading > p,
+.landing-page #tasks .section-kicker {
+  color: #999999;
+}
+
+.landing-page #tasks .task-card {
+  border-color: #292929;
+  background: #151515;
+}
+
+.landing-page #tasks .task-table-head,
+.landing-page #tasks .task-row summary,
+.landing-page #tasks .task-details {
+  color: #ffffff;
+  border-color: #303030;
+}
+
+.landing-page #tasks .task-title small,
+.landing-page #tasks .task-table-head,
+.landing-page #tasks .task-details span {
+  color: #929292;
+}
+
+.landing-page #profiles .profile-primary {
+  color: #ffffff;
+  border-color: #6e48ff;
+  background:
+    radial-gradient(circle at 80% 10%, rgba(199, 255, 74, 0.72), transparent 23%),
+    linear-gradient(145deg, #6e48ff, #251642);
+}
+
+.landing-page #profiles .profile-primary p,
+.landing-page #profiles .profile-sources {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.landing-page .final-card {
+  color: #ffffff;
+  border: 0;
+  background:
+    radial-gradient(circle at 84% 12%, rgba(199, 255, 74, 0.9), transparent 20%),
+    radial-gradient(circle at 76% 100%, rgba(255, 89, 190, 0.6), transparent 34%),
+    linear-gradient(145deg, #6e48ff, #1a1032 72%);
+}
+
+.landing-page .final-card h2,
+.landing-page .final-card .section-kicker {
+  color: #ffffff;
+}
+
+.landing-page .final-card p {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.landing-page .final-card .primary-button {
+  color: #070707;
+  background: #ffffff;
+  border-color: #ffffff;
+}
+
+.landing-page .final-card .secondary-button {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.38);
+}
+
+.landing-page .canvas-footer {
+  color: #999999;
+  background: #070707;
+}
+
+@media (max-width: 1023px) {
+  .landing-page .landing-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .landing-page .meta-hero-visual {
+    width: min(680px, 100%);
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .landing-page .landing-hero,
+  .landing-page .showcase-section,
+  .landing-page .landing-section {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .landing-page .landing-hero h1 {
+    font-size: clamp(54px, 16vw, 76px);
+  }
+
+  .landing-page .metric-strip {
+    margin-right: 16px;
+    margin-left: 16px;
+  }
+
+  .landing-page #thinking,
+  .landing-page #tasks {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+}
+
+/* Candidate and recruiter portals */
+.portal-page {
+  min-height: 100svh;
+  color: #151515;
+  background: #f3f1eb;
+}
+
+.portal-page > .product-header {
+  color: #ffffff;
+  background: rgba(7, 7, 7, 0.94);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.portal-page .product-header .wordmark,
+.portal-page .product-header .wordmark > span,
+.portal-page .header-text-action {
+  color: #ffffff;
+}
+
+.portal-page .product-header .wordmark i {
+  color: #070707;
+  background: #c7ff4a;
+}
+
+.portal-page .product-header .wordmark small,
+.portal-page .product-account {
+  color: #929292;
+}
+
+.portal-page .product-nav {
+  background: #1b1b1b;
+}
+
+.portal-page .product-nav a {
+  color: #969696;
+}
+
+.portal-page .product-nav a:hover,
+.portal-page .product-nav a.active {
+  color: #070707;
+  background: #ffffff;
+}
+
+.portal-page .header-primary-action {
+  color: #070707;
+  background: #ffffff;
+}
+
+.portal-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 72px;
+  align-items: center;
+  min-height: 520px;
+  padding: 72px max(32px, calc((100vw - 1280px) / 2));
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 82% 15%, rgba(199, 255, 74, 0.58), transparent 22%),
+    radial-gradient(circle at 88% 90%, rgba(255, 81, 183, 0.24), transparent 28%),
+    linear-gradient(145deg, #6e48ff, #1b1034 68%, #070707);
+}
+
+.portal-hero .section-kicker {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.portal-hero h1,
+.recruiter-hero h1 {
+  margin: 18px 0 24px;
+  font-size: clamp(56px, 6vw, 86px);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.065em;
+}
+
+.portal-hero h1 span,
+.recruiter-hero h1 span {
+  color: rgba(255, 255, 255, 0.52);
+}
+
+.portal-hero > div:first-child > p:last-child {
+  max-width: 640px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.portal-hero-orbit {
+  position: relative;
+  display: grid;
+  width: 280px;
+  height: 280px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 34px rgba(255, 255, 255, 0.06),
+    0 0 0 68px rgba(255, 255, 255, 0.035);
+}
+
+.portal-hero-orbit i {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 4px solid #ffffff;
+  border-radius: 50%;
+  background: #c7ff4a;
+}
+
+.portal-hero-orbit i:first-child {
+  top: 24px;
+  right: 48px;
+}
+
+.portal-hero-orbit i:nth-child(2) {
+  bottom: 44px;
+  left: 14px;
+  background: #ff71c2;
+}
+
+.portal-hero-orbit strong {
+  font-size: 56px;
+  font-weight: 500;
+  letter-spacing: -0.05em;
+}
+
+.portal-hero-orbit span {
+  position: absolute;
+  top: 63%;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.portal-stats,
+.recruiter-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  padding: 24px max(32px, calc((100vw - 1280px) / 2));
+  background: #070707;
+}
+
+.portal-stats article,
+.recruiter-metrics article {
+  display: flex;
+  min-height: 160px;
+  padding: 24px;
+  flex-direction: column;
+  border-radius: 20px;
+  background: #171717;
+}
+
+.portal-stats article:nth-child(2),
+.recruiter-metrics article:nth-child(2) {
+  color: #070707;
+  background: #c7ff4a;
+}
+
+.portal-stats article:nth-child(3),
+.recruiter-metrics article:nth-child(3) {
+  color: #ffffff;
+  background: #6e48ff;
+}
+
+.portal-stats article span,
+.recruiter-metrics article span {
+  color: #8f8f8f;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.portal-stats article:nth-child(2) span,
+.portal-stats article:nth-child(2) small,
+.recruiter-metrics article:nth-child(2) span,
+.recruiter-metrics article:nth-child(2) small {
+  color: rgba(7, 7, 7, 0.6);
+}
+
+.portal-stats article:nth-child(3) span,
+.portal-stats article:nth-child(3) small,
+.recruiter-metrics article:nth-child(3) span,
+.recruiter-metrics article:nth-child(3) small {
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.portal-stats article strong,
+.recruiter-metrics article strong {
+  margin: auto 0 7px;
+  color: #ffffff;
+  font-size: 42px;
+  font-weight: 500;
+  letter-spacing: -0.05em;
+}
+
+.portal-stats article:nth-child(2) strong,
+.recruiter-metrics article:nth-child(2) strong {
+  color: #070707;
+}
+
+.portal-stats article small,
+.recruiter-metrics article small {
+  color: #777777;
+  font-size: 10px;
+}
+
+.portal-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+  gap: 14px;
+  padding: 96px max(32px, calc((100vw - 1280px) / 2));
+}
+
+.portal-panel {
+  padding: 28px;
+  border: 1px solid #d3cfc6;
+  border-radius: 24px;
+  background: #ffffff;
+}
+
+.portal-panel > header,
+.portal-opportunities > header,
+.recruiter-block > header,
+.talent-table-block > header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.portal-panel h2,
+.portal-opportunities h2,
+.recruiter-block h2,
+.recruiter-side-card h2 {
+  margin: 10px 0 0;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.portal-panel > header > a,
+.portal-opportunities > header > a,
+.recruiter-block > header a {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.candidate-application-list {
+  display: grid;
+}
+
+.candidate-application-list > a {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  min-height: 122px;
+  padding: 18px 4px;
+  border-top: 1px solid #dedad2;
+}
+
+.portal-index {
+  color: #6e48ff;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.candidate-application-list strong {
+  display: block;
+  margin: 6px 0;
+  font-size: 17px;
+}
+
+.candidate-application-list small,
+.candidate-application-list p,
+.candidate-application-list time {
+  color: #77756f;
+  font-size: 10px;
+}
+
+.candidate-application-list p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.candidate-application-list > a > div:last-child {
+  display: grid;
+  justify-items: end;
+  gap: 10px;
+}
+
+.portal-side {
+  display: grid;
+  gap: 14px;
+}
+
+.profile-health {
+  color: #ffffff;
+  border-color: #151515;
+  background: #151515;
+}
+
+.portal-panel-icon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 48px;
+  place-items: center;
+  color: #070707;
+  border-radius: 50%;
+  background: #c7ff4a;
+  font-size: 24px;
+}
+
+.profile-health .section-kicker {
+  color: #929292;
+}
+
+.profile-health > p:not(.section-kicker) {
+  color: #9f9f9f;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.profile-health-track {
+  height: 7px;
+  margin: 28px 0;
+  border-radius: 99px;
+  background: #2a2a2a;
+  overflow: hidden;
+}
+
+.profile-health-track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #c7ff4a;
+}
+
+.profile-health .secondary-button {
+  color: #070707;
+  border-color: #ffffff;
+  background: #ffffff;
+}
+
+.candidate-message {
+  color: #070707;
+  border-color: #c7ff4a;
+  background: #c7ff4a;
+}
+
+.candidate-message .section-kicker {
+  color: rgba(7, 7, 7, 0.6);
+}
+
+.candidate-message blockquote {
+  margin: 44px 0 24px;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.03em;
+}
+
+.candidate-message > span {
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.portal-empty {
+  padding: 70px 20px;
+  text-align: center;
+}
+
+.portal-empty strong {
+  font-size: 24px;
+}
+
+.portal-empty p {
+  margin: 12px 0 24px;
+  color: #77756f;
+}
+
+.portal-opportunities {
+  padding: 0 max(32px, calc((100vw - 1280px) / 2)) 112px;
+}
+
+.portal-opportunities > div {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.portal-opportunities > div > a {
+  display: flex;
+  min-height: 250px;
+  padding: 24px;
+  flex-direction: column;
+  border: 1px solid #d3cfc6;
+  border-radius: 20px;
+  background: #ffffff;
+}
+
+.portal-opportunities > div > a:nth-child(2) {
+  color: #ffffff;
+  border-color: #6e48ff;
+  background: #6e48ff;
+}
+
+.portal-opportunities > div > a > span,
+.portal-opportunities > div > a > small {
+  color: #77756f;
+  font-size: 10px;
+}
+
+.portal-opportunities > div > a:nth-child(2) > span,
+.portal-opportunities > div > a:nth-child(2) > small {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.portal-opportunities > div > a > strong {
+  margin: auto 0 10px;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.portal-opportunities > div > a > b {
+  align-self: flex-end;
+  font-size: 18px;
+}
+
+.recruiter-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 48px;
+  min-height: 470px;
+  padding: 72px max(32px, calc((100vw - 1280px) / 2));
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 92% 0%, rgba(199, 255, 74, 0.4), transparent 23%),
+    radial-gradient(circle at 73% 90%, rgba(110, 72, 255, 0.72), transparent 35%),
+    #070707;
+}
+
+.recruiter-hero .section-kicker {
+  color: #929292;
+}
+
+.recruiter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-bottom: 16px;
+}
+
+.recruiter-hero .primary-button {
+  color: #070707;
+  border-color: #ffffff;
+  background: #ffffff;
+}
+
+.recruiter-hero .secondary-button {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.38);
+}
+
+.recruiter-block {
+  padding: 96px max(32px, calc((100vw - 1280px) / 2));
+}
+
+.recruiter-block > header > span {
+  color: #77756f;
+  font-size: 11px;
+}
+
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.kanban-column {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #d3cfc6;
+  border-radius: 18px;
+  background: #eae7df;
+}
+
+.kanban-column > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 4px 15px;
+}
+
+.kanban-column > header strong {
+  font-size: 12px;
+}
+
+.kanban-column > header span {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  color: #ffffff;
+  border-radius: 50%;
+  background: #151515;
+  font-size: 9px;
+}
+
+.kanban-column > div {
+  display: grid;
+  gap: 8px;
+}
+
+.kanban-column article {
+  padding: 16px;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.kanban-avatar {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  margin-bottom: 22px;
+  place-items: center;
+  color: #ffffff;
+  border-radius: 50%;
+  background: #6e48ff;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.kanban-column article > strong {
+  display: block;
+  font-size: 13px;
+}
+
+.kanban-column article p {
+  margin: 5px 0;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.kanban-column article small {
+  color: #77756f;
+  font-size: 9px;
+}
+
+.kanban-column article footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 12px;
+  color: #77756f;
+  border-top: 1px solid #e6e2d9;
+  font-size: 9px;
+}
+
+.kanban-empty {
+  padding: 28px 12px;
+  color: #77756f;
+  text-align: center;
+  font-size: 11px;
+}
+
+.recruiter-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+  gap: 14px;
+  padding: 0 max(32px, calc((100vw - 1280px) / 2)) 112px;
+}
+
+.recruiter-grid .recruiter-block {
+  padding: 28px;
+  border: 1px solid #d3cfc6;
+  border-radius: 24px;
+  background: #ffffff;
+}
+
+.recruiter-table {
+  display: grid;
+}
+
+.recruiter-table-head,
+.recruiter-table-row {
+  display: grid;
+  grid-template-columns: 1.1fr 1.3fr 0.7fr 0.55fr;
+  gap: 12px;
+  align-items: center;
+  min-height: 58px;
+  border-top: 1px solid #dedad2;
+}
+
+.recruiter-table-head {
+  min-height: 38px;
+  color: #77756f;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.recruiter-table-row {
+  font-size: 11px;
+}
+
+.recruiter-table-row > span:first-child {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  column-gap: 9px;
+  align-items: center;
+}
+
+.recruiter-table-row i {
+  display: grid;
+  grid-row: 1 / 3;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  color: #ffffff;
+  border-radius: 50%;
+  background: #6e48ff;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.recruiter-table-row b,
+.recruiter-table-row small {
+  display: block;
+}
+
+.recruiter-table-row small {
+  margin-top: 3px;
+  color: #77756f;
+  font-size: 8px;
+}
+
+.recruiter-side-card {
+  padding: 28px;
+  color: #070707;
+  border-radius: 24px;
+  background: #c7ff4a;
+}
+
+.recruiter-side-card .section-kicker {
+  color: rgba(7, 7, 7, 0.6);
+}
+
+.recruiter-side-card ol {
+  display: grid;
+  gap: 0;
+  margin: 42px 0 32px;
+  padding: 0;
+  list-style: none;
+}
+
+.recruiter-side-card li {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 10px;
+  padding: 17px 0;
+  border-top: 1px solid rgba(7, 7, 7, 0.18);
+}
+
+.recruiter-side-card li > span {
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.recruiter-side-card li b {
+  display: block;
+  font-size: 12px;
+}
+
+.recruiter-side-card li p {
+  margin: 5px 0 0;
+  color: rgba(7, 7, 7, 0.62);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.recruiter-side-card .primary-button {
+  width: 100%;
+}
+
+@media (max-width: 1023px) {
+  .portal-hero {
+    grid-template-columns: 1fr 240px;
+  }
+
+  .portal-hero-orbit {
+    width: 220px;
+    height: 220px;
+  }
+
+  .portal-layout,
+  .recruiter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-side {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .portal-opportunities > div,
+  .kanban-board {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .portal-hero,
+  .recruiter-hero {
+    display: block;
+    min-height: 0;
+    padding: 68px 16px;
+  }
+
+  .portal-hero h1,
+  .recruiter-hero h1 {
+    font-size: clamp(50px, 15vw, 70px);
+  }
+
+  .portal-hero-orbit {
+    width: 190px;
+    height: 190px;
+    margin: 80px auto 20px;
+  }
+
+  .portal-stats,
+  .recruiter-metrics {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 16px;
+  }
+
+  .portal-layout,
+  .recruiter-block,
+  .recruiter-grid {
+    padding: 64px 16px;
+  }
+
+  .portal-side {
+    grid-template-columns: 1fr;
+  }
+
+  .candidate-application-list > a {
+    grid-template-columns: 30px 1fr;
+  }
+
+  .candidate-application-list > a > div:last-child {
+    grid-column: 2;
+    grid-template-columns: auto 1fr;
+    justify-items: start;
+  }
+
+  .portal-opportunities {
+    padding: 0 16px 72px;
+  }
+
+  .portal-opportunities > div,
+  .kanban-board {
+    grid-template-columns: 1fr;
+  }
+
+  .recruiter-actions {
+    margin-top: 34px;
+  }
+
+  .recruiter-table {
+    overflow-x: auto;
+  }
+
+  .recruiter-table-head,
+  .recruiter-table-row {
+    min-width: 670px;
+  }
+}
+
 * {
   box-sizing: border-box;
 }

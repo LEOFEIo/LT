@@ -1,7 +1,7 @@
 import { getChatGPTUser, requireChatGPTUser } from "../chatgpt-auth";
 
 function configuredAdminEmail() {
-  return (process.env.ADMIN_EMAIL ?? "").trim().toLowerCase();
+  return (process.env.ADMIN_EMAIL ?? "admin@shiguang.local").trim().toLowerCase();
 }
 
 export async function requireUser(returnTo: string) {
