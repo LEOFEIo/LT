@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import "./apple-layout.css";
+import "./linear-layout.css";
 
 export const metadata: Metadata = {
   title: {
