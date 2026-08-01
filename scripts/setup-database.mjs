@@ -15,11 +15,43 @@ await sql`
   CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     email TEXT NOT NULL UNIQUE,
+    username TEXT UNIQUE,
+    password_hash TEXT,
     display_name TEXT NOT NULL,
     role TEXT NOT NULL DEFAULT 'user',
+    github_login TEXT,
+    github_id TEXT,
+    github_avatar_url TEXT,
+    github_name TEXT,
+    github_bio TEXT,
+    github_company TEXT,
+    github_location TEXT,
+    github_followers INTEGER NOT NULL DEFAULT 0,
+    github_public_repos INTEGER NOT NULL DEFAULT 0,
+    github_top_languages TEXT NOT NULL DEFAULT '',
+    github_connected_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
   )
+`;
+
+await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS username TEXT`;
+await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash TEXT`;
+await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS github_login TEXT`;
+await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS github_id TEXT`;
+await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS github_avatar_url TEXT`;
+await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS github_name TEXT`;
+await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS github_bio TEXT`;
+await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS github_company TEXT`;
+await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS github_location TEXT`;
+await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS github_followers INTEGER NOT NULL DEFAULT 0`;
+await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS github_public_repos INTEGER NOT NULL DEFAULT 0`;
+await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS github_top_languages TEXT NOT NULL DEFAULT ''`;
+await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS github_connected_at TIMESTAMPTZ`;
+await sql`
+  CREATE UNIQUE INDEX IF NOT EXISTS users_username_lower_idx
+  ON users (LOWER(username))
+  WHERE username IS NOT NULL
 `;
 
 await sql`

@@ -198,8 +198,9 @@
   function buildControls() {
     var controls = document.createElement("div");
     controls.className = "site-preferences";
+    controls.dataset.open = "false";
     controls.setAttribute("aria-label", "显示偏好");
-    controls.innerHTML = '<div class="preference-group" aria-label="语言切换"><button type="button" data-language="zh" aria-label="中文">中</button><button type="button" data-language="en" aria-label="English">EN</button></div><span aria-hidden="true"></span><div class="preference-group" aria-label="界面主题"><button type="button" data-theme-choice="light" aria-label="浅色模式" title="浅色模式">☼</button><button type="button" data-theme-choice="dark" aria-label="深色模式" title="深色模式">◐</button></div>';
+    controls.innerHTML = '<button class="preference-trigger" type="button" data-preference-trigger aria-label="打开显示偏好" aria-expanded="false">Aa</button><div class="preferences-panel"><div class="preference-group" aria-label="语言切换"><button type="button" data-language="zh" aria-label="中文">中</button><button type="button" data-language="en" aria-label="English">EN</button></div><span aria-hidden="true"></span><div class="preference-group" aria-label="界面主题"><button type="button" data-theme-choice="light" aria-label="浅色模式" title="浅色模式">☼</button><button type="button" data-theme-choice="dark" aria-label="深色模式" title="深色模式">◐</button></div></div>';
     document.body.appendChild(controls);
 
     function updatePressed() {
@@ -209,6 +210,12 @@
     controls.addEventListener("click", function (event) {
       var button = event.target.closest("button");
       if (!button) return;
+      if (button.dataset.preferenceTrigger !== undefined) {
+        var nextOpen = controls.dataset.open !== "true";
+        controls.dataset.open = String(nextOpen);
+        button.setAttribute("aria-expanded", String(nextOpen));
+        return;
+      }
       if (button.dataset.language) {
         language = button.dataset.language;
         localStorage.setItem("shiguang-language", language);
@@ -223,6 +230,8 @@
         root.style.colorScheme = theme;
         updateThemeColor();
       }
+      controls.dataset.open = "false";
+      controls.querySelector("[data-preference-trigger]").setAttribute("aria-expanded", "false");
       updatePressed();
     });
     updatePressed();

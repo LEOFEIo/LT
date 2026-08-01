@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
+import { eq, or } from "drizzle-orm";
+import { getDb } from "../../../../db";
+import { profiles, users } from "../../../../db/schema";
 import {
   createSessionToken,
   safeRelativeReturnPath,
   sessionCookieName,
 } from "../../../chatgpt-auth";
+import { verifyPassword } from "../../../lib/password";
 
 export async function POST(request: Request) {
   const form = await request.formData();
@@ -22,9 +26,34 @@ export async function POST(request: Request) {
     .toLowerCase();
   const adminPassword = process.env.ADMIN_PASSWORD ?? "fy147852";
   const isAdminLogin = login === adminUsername || login === adminEmail;
-  const email = isAdminLogin ? adminEmail : login;
+  let email = isAdminLogin ? adminEmail : login;
+  let account:
+    | {
+        email: string;
+        username: string | null;
+        passwordHash: string | null;
+        displayName: string;
+        fullName: string | null;
+      }
+    | undefined;
 
-  if ((!isAdminLogin && (!displayName || !email.includes("@"))) || !login) {
+  if (!isAdminLogin && process.env.DATABASE_URL) {
+    [account] = await getDb()
+      .select({
+        email: users.email,
+        username: users.username,
+        passwordHash: users.passwordHash,
+        displayName: users.displayName,
+        fullName: profiles.fullName,
+      })
+      .from(users)
+      .leftJoin(profiles, eq(users.email, profiles.userEmail))
+      .where(or(eq(users.email, login), eq(users.username, login)))
+      .limit(1);
+    if (account) email = account.email;
+  }
+
+  if ((!isAdminLogin && !account && (!displayName || !email.includes("@"))) || !login) {
     signInUrl.searchParams.set("error", "invalid");
     return NextResponse.redirect(signInUrl, 303);
   }
@@ -34,13 +63,24 @@ export async function POST(request: Request) {
     return NextResponse.redirect(signInUrl, 303);
   }
 
+  if (account?.passwordHash) {
+    const validPassword = await verifyPassword(password, account.passwordHash);
+    if (!validPassword) {
+      signInUrl.searchParams.set("error", "password");
+      return NextResponse.redirect(signInUrl, 303);
+    }
+  }
+
   const response = NextResponse.redirect(new URL(returnTo, request.url), 303);
   response.cookies.set(
     sessionCookieName,
     createSessionToken({
-      displayName: isAdminLogin ? "admin" : displayName,
+      displayName: isAdminLogin ? "admin" : (account?.displayName ?? displayName),
       email,
-      fullName: isAdminLogin ? "Administrator" : displayName,
+      fullName: isAdminLogin
+        ? "Administrator"
+        : (account?.fullName || account?.displayName || displayName),
+      username: isAdminLogin ? null : (account?.username ?? null),
     }),
     {
       httpOnly: true,

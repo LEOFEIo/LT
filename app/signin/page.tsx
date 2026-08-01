@@ -10,6 +10,7 @@ export const dynamic = "force-dynamic";
 const errorMessages: Record<string, string> = {
   invalid: "请填写有效的姓名和邮箱。",
   admin: "管理员密码不正确。",
+  password: "账号或密码不正确。",
 };
 
 export default async function SignInPage({
@@ -65,7 +66,7 @@ export default async function SignInPage({
             />
           </label>
           <label>
-            <span>管理员密码 <small>普通候选人无需填写</small></span>
+            <span>密码 <small>已注册账号或管理员填写</small></span>
             <input
               autoComplete="current-password"
               name="password"
@@ -84,6 +85,7 @@ export default async function SignInPage({
         </form>
 
         <p className="signin-note">
+          还没有公开主页？ <Link href={`/register?return_to=${encodeURIComponent(returnTo)}`}>注册账号</Link><br />
           演示管理员：用户名 admin。生产部署请通过环境变量更换账号和密码。
         </p>
       </section>

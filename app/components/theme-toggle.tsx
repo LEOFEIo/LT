@@ -248,6 +248,52 @@ const translations: Record<string, string> = {
   "职级待补充": "Level pending",
   "未填写电话": "No phone provided",
   "面议": "Negotiable",
+  "创建你的公开人才主页。": "Create your public talent profile.",
+  "获得专属 `/u/用户名` 链接，展示真实工作、职业方向，并连接你的 GitHub。": "Get a personal `/u/username` link to show your work, direction, and GitHub.",
+  "注册并创建主页": "Register and create profile",
+  "当前方向": "Current focus",
+  "一句话介绍": "Short introduction",
+  "你正在做什么，以及希望解决什么问题": "What you are working on and the problems you want to solve",
+  "已有账号？": "Already registered?",
+  "返回登录": "Back to sign in",
+  "还没有公开主页？": "No public profile yet?",
+  "注册账号": "Register",
+  "连接你的真实工作": "Connect your real work",
+  "查看公开主页": "View public profile",
+  "创建公开主页": "Create public profile",
+  "已连接": "Connected",
+  "个公开仓库": " public repositories",
+  "位关注者": " followers",
+  "打开 GitHub": "Open GitHub",
+  "授权后同步公开头像、简介、仓库与语言，不保存访问令牌。": "Sync your public avatar, bio, repositories, and languages without storing the access token.",
+  "使用 GitHub 连接": "Connect with GitHub",
+  "或绑定公开用户名": "Or link a public username",
+  "无需授权，直接读取 GitHub 已公开的信息。": "No authorization required; only public GitHub information is read.",
+  "GitHub 用户名": "GitHub username",
+  "同步中…": "Syncing…",
+  "连接": "Connect",
+  "公开人才主页": "Public talent profile",
+  "分享主页": "Share profile",
+  "链接已复制": "Link copied",
+  "编辑主页": "Edit profile",
+  "正在完善这份公开人才主页。": "This public talent profile is being completed.",
+  "年经验": " years of experience",
+  "正在补充技能": "Skills coming soon",
+  "GitHub 公开仓库": "GitHub public repositories",
+  "GitHub 关注者": "GitHub followers",
+  "活跃技术语言": "Active languages",
+  "最近的 GitHub 工作": "Recent GitHub work",
+  "全部仓库": "All repositories",
+  "查看这个公开项目及其最近更新。": "View this public project and its latest updates.",
+  "GitHub 暂时无法读取": "GitHub is temporarily unavailable",
+  "还没有连接 GitHub": "GitHub is not connected yet",
+  "前往个人工作台连接 GitHub，公开项目会自动出现在这里。": "Connect GitHub from your workspace and public projects will appear here automatically.",
+  "这位用户正在整理公开工作。": "This person is organizing their public work.",
+  "创建你的公开主页": "Create your public profile",
+  "我的主页": "My profile",
+  "创建主页": "Create profile",
+  "注册公开账号": "Register public account",
+  "公开展示这份档案，并允许拾光用于机会匹配": "Show this profile publicly and allow Shiguang to use it for matching",
 };
 
 const translationPairs = Object.entries(translations).sort(
@@ -341,6 +387,7 @@ function setDocumentLanguage(language: Language) {
 export function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>("light");
   const [language, setLanguage] = useState<Language>("zh");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const savedTheme = window.localStorage.getItem("shiguang-theme");
@@ -385,24 +432,37 @@ export function ThemeToggle() {
     setTheme(next);
     setDocumentTheme(next);
     window.localStorage.setItem("shiguang-theme", next);
+    setOpen(false);
   }
 
   function chooseLanguage(next: Language) {
     setLanguage(next);
     setDocumentLanguage(next);
     window.localStorage.setItem("shiguang-language", next);
+    setOpen(false);
   }
 
   return (
-    <div className="site-preferences" aria-label="显示偏好">
-      <div className="preference-group" aria-label="语言切换">
-        <button type="button" aria-label="中文" aria-pressed={language === "zh"} onClick={() => chooseLanguage("zh")}>中</button>
-        <button type="button" aria-label="English" aria-pressed={language === "en"} onClick={() => chooseLanguage("en")}>EN</button>
-      </div>
-      <span aria-hidden="true" />
-      <div className="preference-group" aria-label="界面主题">
-        <button type="button" aria-label="浅色模式" title="浅色模式" aria-pressed={theme === "light"} onClick={() => chooseTheme("light")}>☼</button>
-        <button type="button" aria-label="深色模式" title="深色模式" aria-pressed={theme === "dark"} onClick={() => chooseTheme("dark")}>◐</button>
+    <div className="site-preferences" data-open={open ? "true" : "false"} aria-label="显示偏好">
+      <button
+        className="preference-trigger"
+        type="button"
+        aria-label="打开显示偏好"
+        aria-expanded={open}
+        onClick={() => setOpen((current) => !current)}
+      >
+        Aa
+      </button>
+      <div className="preferences-panel">
+        <div className="preference-group" aria-label="语言切换">
+          <button type="button" aria-label="中文" aria-pressed={language === "zh"} onClick={() => chooseLanguage("zh")}>中</button>
+          <button type="button" aria-label="English" aria-pressed={language === "en"} onClick={() => chooseLanguage("en")}>EN</button>
+        </div>
+        <span aria-hidden="true" />
+        <div className="preference-group" aria-label="界面主题">
+          <button type="button" aria-label="浅色模式" title="浅色模式" aria-pressed={theme === "light"} onClick={() => chooseTheme("light")}>☼</button>
+          <button type="button" aria-label="深色模式" title="深色模式" aria-pressed={theme === "dark"} onClick={() => chooseTheme("dark")}>◐</button>
+        </div>
       </div>
     </div>
   );

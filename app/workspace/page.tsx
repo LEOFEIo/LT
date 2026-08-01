@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { desc, eq } from "drizzle-orm";
 import { getDb } from "../../db";
-import { applications, jobs, profiles } from "../../db/schema";
+import { applications, jobs, profiles, users } from "../../db/schema";
+import { GitHubConnectCard } from "../components/github-connect-card";
 import { ProfileForm } from "../components/profile-form";
 import { ProductHeader } from "../components/product-header";
 import { demoJobs } from "../lib/demo-data";
@@ -25,10 +26,15 @@ const statusLabels: Record<string, string> = {
   closed: "已结束",
 };
 
-export default async function WorkspacePage() {
+export default async function WorkspacePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ github?: string }>;
+}) {
+  const params = await searchParams;
   const user = await requireUser("/workspace");
   const db = process.env.DATABASE_URL ? getDb() : null;
-  const [profileRows, applicationRows, recommendedJobs] = db
+  const [profileRows, applicationRows, recommendedJobs, accountRows] = db
     ? await Promise.all([
         db
           .select()
@@ -51,9 +57,23 @@ export default async function WorkspacePage() {
           .where(eq(applications.userEmail, user.email))
           .orderBy(desc(applications.createdAt)),
         db.select().from(jobs).where(eq(jobs.status, "active")).limit(3),
+        db
+          .select({
+            username: users.username,
+            githubLogin: users.githubLogin,
+            githubAvatarUrl: users.githubAvatarUrl,
+            githubFollowers: users.githubFollowers,
+            githubPublicRepos: users.githubPublicRepos,
+            githubTopLanguages: users.githubTopLanguages,
+          })
+          .from(users)
+          .where(eq(users.email, user.email))
+          .limit(1),
       ])
-    : [[], [], demoJobs.slice(0, 3)];
+    : [[], [], demoJobs.slice(0, 3), []];
   const profile = profileRows[0] ?? null;
+  const account = accountRows[0] ?? null;
+  const publicUsername = account?.username ?? user.username;
   const completeness = profile
     ? Math.round(
         ([
@@ -84,6 +104,7 @@ export default async function WorkspacePage() {
             <a className="active" href="#overview">概览</a>
             <a href="#applications">我的申请</a>
             <a href="#profile">拾光档案</a>
+            {publicUsername ? <Link href={`/u/${publicUsername}`}>公开主页 ↗</Link> : null}
             <Link href="/jobs">发现机会 ↗</Link>
           </nav>
         </aside>
@@ -118,6 +139,12 @@ export default async function WorkspacePage() {
               <small>等待顾问或面试反馈</small>
             </article>
           </section>
+
+          <GitHubConnectCard
+            account={account}
+            username={publicUsername}
+            oauthStatus={params.github}
+          />
 
           <section className="dashboard-block" id="applications">
             <div className="block-heading">

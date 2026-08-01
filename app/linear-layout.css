@@ -160,20 +160,30 @@ canvas {
   z-index: 1000;
   right: max(18px, env(safe-area-inset-right));
   bottom: max(18px, env(safe-area-inset-bottom));
+  min-height: 44px;
+  color: var(--linear-ink);
+  pointer-events: none;
+}
+
+.preferences-panel {
   display: flex;
   align-items: center;
   gap: 7px;
   min-height: 44px;
   padding: 5px;
-  color: var(--linear-ink);
   border: 1px solid var(--linear-line);
   border-radius: 12px;
   background: color-mix(in srgb, var(--linear-canvas) 92%, transparent);
   box-shadow: 0 12px 34px rgba(15, 15, 15, .12);
   backdrop-filter: blur(18px) saturate(150%);
+  pointer-events: auto;
 }
 
-.site-preferences > span {
+.preference-trigger {
+  display: none;
+}
+
+.preferences-panel > span {
   width: 1px;
   height: 24px;
   background: var(--linear-line);
@@ -1568,5 +1578,745 @@ textarea {
     animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: .01ms !important;
+  }
+}
+
+/* V9 theme integrity — the final authority over legacy design layers. */
+html[data-theme] body,
+html[data-theme] .landing-page,
+html[data-theme] .dashboard-page,
+html[data-theme] .portal-page,
+html[data-theme] .public-profile-page {
+  color: var(--linear-ink) !important;
+  background: var(--linear-canvas) !important;
+}
+
+html[data-theme] .product-header,
+html[data-theme] .landing-page > .product-header {
+  color: var(--linear-ink) !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--linear-line) !important;
+  border-radius: 0 !important;
+  background: color-mix(in srgb, var(--linear-canvas) 92%, transparent) !important;
+}
+
+html[data-theme] .product-header .wordmark,
+html[data-theme] .landing-page .product-header .wordmark,
+html[data-theme] .product-header .wordmark > span,
+html[data-theme] .landing-page .product-header .wordmark > span,
+html[data-theme] .product-header .header-text-action,
+html[data-theme] .landing-page .header-text-action {
+  color: var(--linear-ink) !important;
+}
+
+html[data-theme] .product-header .wordmark i,
+html[data-theme] .landing-page .product-header .wordmark i {
+  color: #fff !important;
+  border-color: color-mix(in srgb, var(--linear-primary) 55%, var(--linear-line)) !important;
+  border-radius: 8px !important;
+  background: var(--linear-primary) !important;
+}
+
+html[data-theme] .product-header .wordmark small,
+html[data-theme] .landing-page .product-header .wordmark small,
+html[data-theme] .product-account,
+html[data-theme] .landing-page .product-account {
+  color: var(--linear-subtle) !important;
+}
+
+html[data-theme] .product-nav,
+html[data-theme] .landing-page .product-nav {
+  border-color: var(--linear-line) !important;
+  background: var(--linear-surface-1) !important;
+}
+
+html[data-theme] .product-nav a,
+html[data-theme] .landing-page .product-nav a {
+  color: var(--linear-subtle) !important;
+}
+
+html[data-theme] .product-nav a:hover,
+html[data-theme] .product-nav a.active,
+html[data-theme] .landing-page .product-nav a:hover,
+html[data-theme] .landing-page .product-nav a.active {
+  color: var(--linear-ink) !important;
+  background: var(--linear-canvas) !important;
+}
+
+html[data-theme] .header-primary-action,
+html[data-theme] .landing-page .header-primary-action {
+  color: #fff !important;
+  border-color: var(--linear-primary) !important;
+  background: var(--linear-primary) !important;
+}
+
+html[data-theme] .mobile-nav summary {
+  color: var(--linear-ink) !important;
+  border: 1px solid var(--linear-line) !important;
+  background: var(--linear-surface-1) !important;
+}
+
+html[data-theme] .apple-planner,
+html[data-theme] .planner-controls,
+html[data-theme] .planner-output {
+  color: var(--linear-ink) !important;
+  border-color: var(--linear-line) !important;
+  background: var(--linear-surface-1) !important;
+}
+
+html[data-theme] .planner-output {
+  background: var(--linear-surface-2) !important;
+}
+
+html[data-theme] .planner-control-head h3,
+html[data-theme] .planner-controls label strong,
+html[data-theme] .planner-output strong,
+html[data-theme] .planner-funnel strong {
+  color: var(--linear-ink) !important;
+}
+
+html[data-theme] .planner-controls label,
+html[data-theme] .planner-controls label > span,
+html[data-theme] .planner-output p,
+html[data-theme] .planner-output span,
+html[data-theme] .planner-output small {
+  color: var(--linear-subtle) !important;
+}
+
+html[data-theme] .planner-live,
+html[data-theme] .planner-segmented,
+html[data-theme] .planner-controls select,
+html[data-theme] .planner-funnel article {
+  color: var(--linear-ink) !important;
+  border-color: var(--linear-line-strong) !important;
+  background: var(--linear-surface-2) !important;
+}
+
+html[data-theme] .planner-segmented button {
+  color: var(--linear-subtle) !important;
+  background: transparent !important;
+}
+
+html[data-theme] .planner-segmented button.active {
+  color: #fff !important;
+  background: var(--linear-primary) !important;
+}
+
+html[data-theme] .ui-card,
+html[data-theme] .profile-primary,
+html[data-theme] .insight-card,
+html[data-theme] .recommendation-card {
+  color: var(--linear-ink) !important;
+  border-color: var(--linear-line) !important;
+  background: var(--linear-surface-1) !important;
+}
+
+html[data-theme] .profile-primary h3,
+html[data-theme] .insight-card h3,
+html[data-theme] .recommendation-card h3,
+html[data-theme] .recommendation-card strong,
+html[data-theme] .recommendation-card code,
+html[data-theme] .recommendation-card a {
+  color: var(--linear-ink) !important;
+}
+
+html[data-theme] .profile-primary p,
+html[data-theme] .profile-sources,
+html[data-theme] .insight-card > span,
+html[data-theme] .insight-card p,
+html[data-theme] .recommendation-card > span,
+html[data-theme] .recommendation-card p {
+  color: var(--linear-subtle) !important;
+}
+
+html[data-theme] .confidence-ring::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Registration */
+.register-page {
+  min-height: min(840px, calc(100svh - 32px));
+  margin-block: 16px;
+}
+
+.register-page .signin-panel {
+  overflow-y: auto;
+}
+
+.register-copy {
+  margin-top: 34px;
+}
+
+.register-copy h1 {
+  font-size: clamp(40px, 5vw, 64px);
+}
+
+.register-form {
+  margin-top: 28px;
+}
+
+.register-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.register-form-grid label {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.register-form-grid label > span {
+  color: var(--linear-subtle);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.register-form-grid .full-field {
+  grid-column: 1 / -1;
+}
+
+.register-form textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+.register-visual {
+  align-content: space-between;
+}
+
+.public-profile-preview {
+  display: grid;
+  gap: 14px;
+  width: min(380px, 82%);
+  margin: auto;
+  padding: 32px;
+  border: 1px solid var(--linear-line);
+  border-radius: 16px;
+  background: var(--linear-canvas);
+}
+
+.public-profile-preview i,
+.github-mark {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  color: #fff;
+  border-radius: 10px;
+  background: var(--linear-primary);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.public-profile-preview strong {
+  color: var(--linear-ink);
+  font-size: 28px;
+}
+
+.public-profile-preview p,
+.public-profile-preview code {
+  color: var(--linear-subtle);
+}
+
+/* GitHub connection in the candidate workspace */
+.github-connect-card {
+  overflow: hidden;
+}
+
+.github-connect-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: 20px;
+  border: 1px solid var(--linear-line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--linear-line);
+}
+
+.github-connect-grid > div,
+.github-connect-grid > form {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  min-width: 0;
+  padding: 24px;
+  background: var(--linear-surface-2);
+}
+
+.github-connect-grid h3,
+.github-account-summary strong {
+  margin: 0;
+  color: var(--linear-ink);
+}
+
+.github-connect-grid p {
+  margin: 0 0 6px;
+}
+
+.github-connect-grid .primary-button {
+  width: fit-content;
+}
+
+.github-connect-grid label,
+.github-connect-grid label > div {
+  display: grid;
+  gap: 8px;
+}
+
+.github-connect-grid label > div {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.github-account-summary {
+  display: grid;
+  grid-template-columns: 56px minmax(180px, .8fr) minmax(180px, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid var(--linear-line);
+  border-radius: 10px;
+  background: var(--linear-surface-2);
+}
+
+.github-account-summary > img {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.github-account-summary > div:not(.github-language-list) {
+  display: grid;
+  gap: 3px;
+}
+
+.github-account-summary span,
+.github-account-summary small {
+  color: var(--linear-subtle);
+}
+
+.github-language-list,
+.public-skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.github-language-list span,
+.public-skill-list span {
+  padding: 6px 9px;
+  color: var(--linear-muted);
+  border: 1px solid var(--linear-line);
+  border-radius: 6px;
+  background: var(--linear-canvas);
+  font-size: 12px;
+}
+
+/* Public username profile */
+.public-profile-shell {
+  width: min(calc(100% - 64px), var(--linear-page));
+  margin: 0 auto;
+  padding: 72px 0 96px;
+}
+
+.public-profile-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--linear-line);
+}
+
+.public-profile-identity {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-width: 0;
+}
+
+.public-profile-identity > img,
+.public-profile-avatar {
+  display: grid;
+  flex: 0 0 auto;
+  width: 112px;
+  height: 112px;
+  place-items: center;
+  border: 1px solid var(--linear-line);
+  border-radius: 24px;
+  background: var(--linear-primary);
+  color: #fff;
+  object-fit: cover;
+  font-size: 42px;
+  font-weight: 650;
+}
+
+.public-profile-identity h1 {
+  margin: 12px 0 4px;
+  color: var(--linear-ink);
+  font-size: clamp(48px, 7vw, 82px);
+  font-weight: 650;
+  letter-spacing: -.055em;
+  line-height: .95;
+}
+
+.public-profile-identity p {
+  margin: 0;
+  color: var(--linear-subtle);
+  font-size: 17px;
+}
+
+.public-profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.public-profile-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, .55fr);
+  gap: 16px;
+  padding: 56px 0 16px;
+}
+
+.public-profile-main,
+.public-profile-side,
+.public-work-section {
+  min-width: 0;
+}
+
+.public-profile-main {
+  padding: 40px;
+  border: 1px solid var(--linear-line);
+  border-radius: 14px;
+  background: var(--linear-surface-1);
+}
+
+.public-profile-main h2 {
+  max-width: 760px;
+  margin: 18px 0 44px;
+  color: var(--linear-ink);
+  font-size: clamp(28px, 3.4vw, 48px);
+  font-weight: 540;
+  letter-spacing: -.035em;
+  line-height: 1.16;
+}
+
+.public-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  margin-bottom: 28px;
+  color: var(--linear-subtle);
+  font-size: 13px;
+}
+
+.public-profile-side {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid var(--linear-line);
+  border-radius: 14px;
+  background: var(--linear-line);
+}
+
+.public-profile-side article {
+  display: grid;
+  align-content: space-between;
+  min-height: 132px;
+  padding: 22px;
+  background: var(--linear-surface-2);
+}
+
+.public-profile-side span {
+  color: var(--linear-subtle);
+  font-size: 12px;
+}
+
+.public-profile-side strong {
+  color: var(--linear-ink);
+  font-size: 38px;
+  font-weight: 600;
+}
+
+.public-work-section {
+  margin-top: 16px;
+  padding: 40px;
+  border: 1px solid var(--linear-line);
+  border-radius: 14px;
+  background: var(--linear-surface-1);
+}
+
+.public-repo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.public-repo-grid > a {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  min-width: 0;
+  min-height: 210px;
+  padding: 22px;
+  border: 1px solid var(--linear-line);
+  border-radius: 10px;
+  background: var(--linear-canvas);
+  transition: transform .2s ease, border-color .2s ease;
+}
+
+.public-repo-grid > a:hover {
+  border-color: var(--linear-line-strong);
+  transform: translateY(-3px);
+}
+
+.public-repo-grid span,
+.public-repo-grid small {
+  color: var(--linear-subtle);
+  font-size: 11px;
+}
+
+.public-repo-grid strong {
+  color: var(--linear-ink);
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.public-repo-grid p {
+  margin: 0;
+  color: var(--linear-subtle) !important;
+  font-size: 13px;
+}
+
+.public-empty-work {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 28px;
+  padding: 28px;
+  border: 1px dashed var(--linear-line-strong);
+  border-radius: 10px;
+}
+
+.public-empty-work > span {
+  display: grid;
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  color: #fff;
+  border-radius: 10px;
+  background: var(--linear-ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.public-empty-work > div {
+  flex: 1;
+}
+
+.public-empty-work h3,
+.public-empty-work p {
+  margin: 0;
+}
+
+.public-empty-work p {
+  color: var(--linear-subtle);
+  font-size: 13px;
+}
+
+.public-profile-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px var(--linear-gutter);
+  color: var(--linear-subtle);
+  border-top: 1px solid var(--linear-line);
+  font-size: 11px;
+  letter-spacing: .08em;
+}
+
+.public-profile-footer a {
+  color: var(--linear-primary-hover);
+}
+
+@media (max-width: 860px) {
+  .github-account-summary {
+    grid-template-columns: 56px minmax(0, 1fr) auto;
+  }
+
+  .github-account-summary .github-language-list {
+    grid-column: 2 / -1;
+  }
+
+  .public-profile-hero {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .public-profile-actions {
+    justify-content: flex-start;
+  }
+
+  .public-profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .public-profile-side {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .public-repo-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .site-preferences {
+    right: max(12px, env(safe-area-inset-right));
+    bottom: max(12px, env(safe-area-inset-bottom));
+    width: 44px;
+    height: 44px;
+  }
+
+  .preference-trigger {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    place-items: center;
+    color: #fff;
+    border: 1px solid color-mix(in srgb, var(--linear-primary) 75%, var(--linear-line));
+    border-radius: 11px;
+    background: var(--linear-primary);
+    box-shadow: 0 8px 28px rgba(15, 15, 15, .16);
+    font: 700 12px/1 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  .preferences-panel {
+    position: absolute;
+    right: 0;
+    bottom: 52px;
+    display: none;
+    width: max-content;
+    max-width: calc(100vw - 24px);
+  }
+
+  .site-preferences[data-open="true"] .preferences-panel {
+    display: flex;
+  }
+
+  .planner-segmented {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .planner-segmented button {
+    min-height: 48px;
+    padding: 7px 5px;
+    font-size: 11px;
+    line-height: 1.25;
+  }
+
+  .register-form-grid,
+  .github-connect-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .register-form-grid .full-field {
+    grid-column: auto;
+  }
+
+  .github-connect-grid label > div {
+    grid-template-columns: 1fr;
+  }
+
+  .github-connect-grid .secondary-button {
+    width: 100%;
+  }
+
+  .github-account-summary {
+    grid-template-columns: 48px minmax(0, 1fr);
+    padding: 16px;
+  }
+
+  .github-account-summary > img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .github-account-summary .github-language-list,
+  .github-account-summary > .secondary-button {
+    grid-column: 1 / -1;
+  }
+
+  .public-profile-shell {
+    width: 100%;
+    padding: 48px 16px 64px;
+  }
+
+  .public-profile-identity {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .public-profile-identity > img,
+  .public-profile-avatar {
+    width: 84px;
+    height: 84px;
+    border-radius: 18px;
+    font-size: 32px;
+  }
+
+  .public-profile-identity h1 {
+    font-size: 48px;
+  }
+
+  .public-profile-actions,
+  .public-profile-actions > * {
+    width: 100%;
+  }
+
+  .public-profile-main,
+  .public-work-section {
+    padding: 24px;
+  }
+
+  .public-profile-side,
+  .public-repo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .public-profile-side article {
+    min-height: 104px;
+  }
+
+  .public-repo-grid > a {
+    min-height: 170px;
+  }
+
+  .public-empty-work {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .public-empty-work > .secondary-button {
+    width: 100%;
+  }
+
+  .public-profile-footer {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }

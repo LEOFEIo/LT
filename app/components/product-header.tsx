@@ -51,6 +51,11 @@ export function ProductHeader({
       <div className="product-account">
         {user ? (
           <>
+            {user.username ? (
+              <Link className="header-text-action" href={`/u/${user.username}`}>
+                我的主页
+              </Link>
+            ) : null}
             <span className="account-name">
               <i className="live-dot" />
               {user.displayName}
@@ -67,8 +72,8 @@ export function ProductHeader({
             >
               登录
             </a>
-            <Link className="header-primary-action" href="/#search">
-              开始搜索
+            <Link className="header-primary-action" href="/register">
+              创建主页
             </Link>
           </>
         )}
@@ -80,6 +85,7 @@ export function ProductHeader({
           <Link href="/jobs">开放机会</Link>
           <Link href="/candidate">候选人端</Link>
           <Link href="/recruiter">招聘方后台</Link>
+          {user?.username ? <Link href={`/u/${user.username}`}>我的主页</Link> : <a href={chatGPTSignOutPath("/register")}>注册公开账号</a>}
         </nav>
       </details>
     </header>

@@ -6,6 +6,7 @@ export type ChatGPTUser = {
   displayName: string;
   email: string;
   fullName: string | null;
+  username: string | null;
 };
 
 type SessionPayload = ChatGPTUser & {
@@ -64,6 +65,8 @@ function readSessionToken(token: string): ChatGPTUser | null {
       displayName: payload.displayName,
       fullName:
         typeof payload.fullName === "string" ? payload.fullName : null,
+      username:
+        typeof payload.username === "string" ? payload.username : null,
     };
   } catch {
     return null;

@@ -164,7 +164,7 @@ export function ProfileForm({ initialProfile }: { initialProfile: Profile }) {
             value="published"
             defaultChecked={initialProfile?.profileStatus === "published"}
           />
-          <span>允许拾光在匹配机会时展示这份档案</span>
+          <span>公开展示这份档案，并允许拾光用于机会匹配</span>
         </label>
         <button className="primary-button" type="submit" disabled={saving}>
           {saving ? "保存中…" : "保存档案"}
