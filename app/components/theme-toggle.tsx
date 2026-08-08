@@ -392,7 +392,12 @@ export function ThemeToggle() {
   useEffect(() => {
     const savedTheme = window.localStorage.getItem("shiguang-theme");
     const savedLanguage = window.localStorage.getItem("shiguang-language");
-    const initialTheme: Theme = savedTheme === "dark" ? "dark" : "light";
+    const initialTheme: Theme =
+      savedTheme === "light" || savedTheme === "dark"
+        ? savedTheme
+        : window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
     const initialLanguage: Language = savedLanguage === "en" ? "en" : "zh";
     setDocumentTheme(initialTheme);
     setDocumentLanguage(initialLanguage);
@@ -460,8 +465,12 @@ export function ThemeToggle() {
         </div>
         <span aria-hidden="true" />
         <div className="preference-group" aria-label="界面主题">
-          <button type="button" aria-label="浅色模式" title="浅色模式" aria-pressed={theme === "light"} onClick={() => chooseTheme("light")}>☼</button>
-          <button type="button" aria-label="深色模式" title="深色模式" aria-pressed={theme === "dark"} onClick={() => chooseTheme("dark")}>◐</button>
+          <button type="button" aria-label="浅色模式" title="浅色模式" aria-pressed={theme === "light"} onClick={() => chooseTheme("light")}>
+            <span className="theme-swatch theme-swatch-light" aria-hidden="true" />
+          </button>
+          <button type="button" aria-label="深色模式" title="深色模式" aria-pressed={theme === "dark"} onClick={() => chooseTheme("dark")}>
+            <span className="theme-swatch theme-swatch-dark" aria-hidden="true" />
+          </button>
         </div>
       </div>
     </div>

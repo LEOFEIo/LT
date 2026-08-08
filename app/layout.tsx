@@ -1,22 +1,55 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./linear-layout.css";
+import "./dinq-theme.css";
 import { ThemeToggle } from "./components/theme-toggle";
 
+const deploymentUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000");
+
 export const metadata: Metadata = {
+  metadataBase: new URL(deploymentUrl),
   title: {
     default: "拾光 SHÍGUĀNG — AI 人才智能系统",
     template: "%s · 拾光 SHÍGUĀNG",
   },
   description:
     "从真实工作、公开证据与长期轨迹中理解稀缺 AI 人才，让每一个判断都能回到来源。",
-  other: {
-    "codex-preview": "development",
-  },
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
   },
+  openGraph: {
+    type: "website",
+    locale: "zh_CN",
+    title: "拾光 SHÍGUĀNG — AI 人才智能系统",
+    description: "从真实工作、公开证据与长期轨迹中理解稀缺 AI 人才。",
+    images: [
+      {
+        url: "/og.png",
+        width: 1731,
+        height: 909,
+        alt: "拾光 AI 人才智能产品预览",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "拾光 SHÍGUĀNG — AI 人才智能系统",
+    description: "从真实工作，看见真正的人才。",
+    images: ["/og.png"],
+  },
+};
+
+export const viewport: Viewport = {
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f8f8f5" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b0c0e" },
+  ],
 };
 
 export default function RootLayout({
@@ -29,7 +62,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('shiguang-theme');var l=localStorage.getItem('shiguang-language');document.documentElement.dataset.theme=t==='dark'?'dark':'light';document.documentElement.dataset.lang=l==='en'?'en':'zh';document.documentElement.lang=l==='en'?'en':'zh-CN';document.documentElement.style.colorScheme=t==='dark'?'dark':'light'}catch(e){}})();`,
+            __html: `(function(){try{var s=localStorage.getItem('shiguang-theme');var t=s==='light'||s==='dark'?s:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');var l=localStorage.getItem('shiguang-language');document.documentElement.dataset.theme=t;document.documentElement.dataset.lang=l==='en'?'en':'zh';document.documentElement.lang=l==='en'?'en':'zh-CN';document.documentElement.style.colorScheme=t}catch(e){}})();`,
           }}
         />
       </head>

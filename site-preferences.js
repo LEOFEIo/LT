@@ -11,7 +11,7 @@
 
   function updateThemeColor() {
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", theme === "dark" ? "#101011" : "#ffffff");
+    if (meta) meta.setAttribute("content", theme === "dark" ? "#0b0c0e" : "#f8f8f5");
   }
 
   var translations = {
