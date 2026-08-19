@@ -1,6 +1,4 @@
-# 拾光 Shiguang Recruiting
-
-一套可直接上传 GitHub、部署到 Vercel 的全栈 AI 人才招聘网站。V9 使用 Notion-inspired 浅色优先产品系统和 DINQ 式人才智能工作流，并加入可注册的公开用户名主页与 GitHub 身份连接；所有品牌、图标、文案和演示数据均为原创，与 Notion 或 DINQ 无官方关联。
+# 拾光 Shiguang Recruiting AI 人才招聘网站。
 
 ## 这个版本包含
 
@@ -22,45 +20,7 @@
 - GitHub OAuth（`state` + PKCE）和公开用户名两种连接方式；同步公开资料但不保存访问令牌
 - 无数据库演示降级：档案和申请可安全保存在当前浏览器，不再直接报错
 
-## 目录入口
 
-| 页面 | GitHub Pages 静态版 | Next.js / Vercel |
-| --- | --- | --- |
-| 品牌首页 | `index.html` | `/` |
-| 登录 | `login.html` | `/signin` |
-| 注册公开账号 | 静态版不提供 | `/register` |
-| 公开用户主页 | 静态版不提供 | `/u/username` |
-| 候选人中心 | `candidate.html` | `/candidate` |
-| 招聘方后台 | `recruiter.html` | `/recruiter` |
-| 完整管理台 | 静态招聘方后台内演示 | `/admin` |
-
-## 静态演示账号
-
-- 管理员用户名：`admin`
-- 管理员密码：`fy147852`
-
-> 重要：GitHub Pages 是纯前端网站，静态账号与密码必然能在源代码中看到，只能用于产品演示，不能保护真实候选人数据。正式上线请部署 Next.js 版本，通过环境变量更换账号密码，并连接数据库和企业身份认证。
-
-静态演示候选人无需密码，在登录页填写姓名和邮箱即可进入。静态版的档案、招聘阶段和新增人才只保存在当前浏览器的 `localStorage` 中。真实注册、公开主页和 GitHub 绑定属于 Next.js 版本，必须连接数据库。
-
-## 直接上传 GitHub
-
-1. 解压下载的 ZIP。
-2. 在 GitHub 新建空仓库，不要预先添加 README 或 `.gitignore`。
-3. 点击 **Add file → Upload files**。
-4. 将 `Shiguang-Recruiting-GitHub` 文件夹内的全部内容拖入上传区域。
-5. 提交到 `main` 分支。
-
-也可以使用 Git：
-
-```bash
-git init
-git add .
-git commit -m "Launch Shiguang Recruiting"
-git branch -M main
-git remote add origin https://github.com/你的用户名/你的仓库名.git
-git push -u origin main
-```
 
 ## 部署 GitHub Pages
 
